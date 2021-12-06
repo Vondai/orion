@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: black;
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #1A1A1B;
+}
+
+.site-logo  a {
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    color: #58b4f1dc;
+}
+
+.site-logo a:hover {
+    color: #7ca6c2dc;
+}
+
+.nav-bar a {
+    margin-right: 15px;
+    text-decoration: none;
+    padding: 8px 25px 8px 25px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.cta-login {
+    background: #212223;
+    color: #D7DADC;
+    border: 1px solid white;
+}
+
+.cta-login:hover {
+    background: #58b4f1dc
+}
+
+.cta-register {
+    background: #C8CBCD;
+    color: #1A1A2B;
+}
+
+.cta-register:hover {
+    background: white;
+}
