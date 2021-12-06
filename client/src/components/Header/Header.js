@@ -1,14 +1,15 @@
+import { Link } from 'react-router-dom';
 function Header () {
     return (
         <section className="site-header">
             <section className="site-logo">
-                <a href="/">
+                <Link to='/'>
                     Orion
-                </a>
+                </Link>
             </section>
             <nav className="nav-bar">
-                <a className="cta-login" href="/login">Login</a>
-                <a className="cta-register" href="/register">Sign Up</a>
+                <Link className="cta-login" to="/login">Log in</Link>
+                <Link className="cta-register" to="/register">Sign Up</Link>
             </nav>
         </section>
     )
