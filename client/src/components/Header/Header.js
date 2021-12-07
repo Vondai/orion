@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 function Header () {
     return (
-        <section className="site-header">
+        <header className="site-header">
             <section className="site-logo">
                 <Link to='/'>
                     Orion
@@ -11,7 +11,7 @@ function Header () {
                 <Link className="cta-login" to="/login">Log in</Link>
                 <Link className="cta-register" to="/register">Sign Up</Link>
             </nav>
-        </section>
+        </header>
     )
 };
 
