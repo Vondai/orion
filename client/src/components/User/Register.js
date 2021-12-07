@@ -14,8 +14,8 @@ function Register () {
                 <input id='password' type='password'></input>
             </fieldset>
             <fieldset className='account-form-credentials'>
-                <label htmlFor='password'>Confirm Password</label>
-                <input id='password' type='password'></input>
+                <label htmlFor='repeat-password'>Repeat Password</label>
+                <input id='repeat-password' type='password'></input>
             </fieldset>
             <section>
                 <p className='account-redirect'>Already a member? <Link to='/login'><span className='account-redirect-hightlight'>Log in</span></Link></p>

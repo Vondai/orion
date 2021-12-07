@@ -1,11 +1,11 @@
-import TopPosts from "./TopPosts";
+import Posts from "./Posts";
 import TopCommunities from "../Communities/TopCommunities";
 
 function Home () {
 
     return (
         <div className='site-content-wrapper'>
-            <TopPosts />
+            <Posts />
             <TopCommunities />
         </div>
     );

@@ -8,12 +8,65 @@ body {
     box-sizing: border-box;
 }
 
+#root {
+    position: relative;
+}
+
 .site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     background: #1A1A1B;
+    width: 100%;
+}
+
+.site-footer-wrapper {
+    position: absolute;
+    width: 100%;
+    left: 74%;
+    bottom: 0vh;
+}
+
+.site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 25%;
+    padding-top: 10px;
+    background: #1A1A1B;
+    border: thin solid grey;
+    border-radius: 5px;
+}
+
+.rights-wrapper {
+    width: 100%;
+}
+
+.rights {
+    color: #D7DADC;
+    font-size: 16px;
+    text-align: center;
+}
+
+.footer-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-list li {
+    padding: 3px;
+}
+
+.footer-list li a {
+    text-decoration: none;
+    color: #58b4f1dc;
+}
+
+.footer-list li a i {
+    margin-right: 4px;
+    color: #D7DADC;
 }
 
 .site-logo  a {
@@ -126,12 +179,15 @@ body {
 }
 
 .site-content {
+    border: thin solid grey;
+    border-radius: 5px;
     background: #1A1A1B;
     width: 70%;
 }
 
 .site-highlight {
     width: 25%;
+    height: fit-content;
     background: #1A1A1B;
     text-align: center;
     color: white;
@@ -143,6 +199,28 @@ body {
 
 .posts-banner {
     display: flex;
+    border-bottom: thin solid grey;
+    padding: 15px 20px;
+}
+
+.posts-wrapper {
+    margin-right: 10px;
+    padding: 5px 10px;
+    background: grey;
+    border: thin solid;
+    border-radius: 5px;
+}
+
+
+.posts-wrapper a {
+    text-decoration: none;
+    color: #1A1A2B;
+    font-size: 18px;
+    font-weight: 600px;
+}
+
+.posts-wrapper a i {
+    margin-right: 5px;
 }
 
 .highlight-content-wrapper {
@@ -167,4 +245,54 @@ body {
 
 .community-link i {
     margin-right: 5px;
+}
+
+.post-listing {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: thin solid grey;
+}
+
+.post-listing:hover {
+    background: #7ca6c2dc;
+    cursor: pointer;
+}
+
+.post-listing-logo-wrapper i {
+    font-size: 37px;
+    color: #58b4f1dc;
+    margin-right: 25px;
+}
+
+.post-listing-wrapper {
+    color: #D7DADC;
+    border-bottom: thin solid;
+
+}
+
+.post-listing-heading-wrapper {
+    font-size: 20px;
+}
+
+.post-listing-heading-content {
+    margin: 0;
+}
+
+.post-listing-details-wrapper {
+    display: flex;
+}
+
+.post-listing-details-wrapper div p {
+    margin: 0;
+    margin-right: 5px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.post-listing-details-wrapper div p a {
+    text-decoration: none;
+    color: grey;
+    font-style: italic;
+
 }
