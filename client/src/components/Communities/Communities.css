@@ -1,0 +1,38 @@
+.site-highlight {
+    height: fit-content;
+    background: #1A1A1B;
+    text-align: center;
+    color: white;
+    border-top: 1px solid  grey;
+    border-left: 1px solid  grey;
+    border-right: 1px solid  grey;
+    border-radius: 5px;
+}
+
+.highlight-content-wrapper {
+    border-top: 1px solid grey;
+}
+
+.highlight-listing {
+    padding: 0;
+    margin: 0;
+    list-style-position: inside;
+}
+
+.highlight-listing-item {
+    padding: 15px 10px;
+    border-bottom: solid thin grey;
+}
+
+.community-link {
+    text-decoration: none;
+    color: #D7DADC;
+}
+
+.community-link:hover {
+    color: #58b4f1dc;
+}
+
+.community-link i {
+    margin-right: 5px;
+}

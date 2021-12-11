@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import Post from './Post';
 
-function TopPosts () {
+function Posts () {
 
     return (
-        <main className='site-content'>
+        <div className='site-content'>
             <article className='posts-banner'>
                 <div className='posts-wrapper hot-posts-wrapper'>
                     <Link className='hot-posts-cta' to='/posts/hot'><i className="fab fa-hotjar"></i>Hot</Link>
@@ -17,16 +17,9 @@ function TopPosts () {
                 <Post />
                 <Post />
                 <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
             </section>
-        </main>
+        </div>
     );
 }
 
-export default TopPosts;
+export default Posts;

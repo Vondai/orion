@@ -1,0 +1,20 @@
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: #1A1A1B;
+    width: 100%;
+}
+
+.site-logo  a {
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    color: #58b4f1dc;
+}
+
+.site-logo a:hover {
+    color: whitesmoke;
+}
+

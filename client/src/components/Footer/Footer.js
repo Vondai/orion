@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
+import "./Footer.css";
 
 function Footer () {
 
     return (
-        <section className='site-footer-wrapper'>
             <footer className='site-footer'>
                 <section className='site-map-wrapper'>
                     <ul className='footer-list site-map-listing'>
@@ -25,8 +25,7 @@ function Footer () {
                 <section className='rights-wrapper'>
                 <p className='rights'>Orion &copy; 2021. All rights reserved</p>
                 </section>
-            </footer>      
-        </section>
+            </footer>
     );
 }
 

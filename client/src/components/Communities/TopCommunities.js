@@ -1,4 +1,5 @@
 import CommunityListingItem from "./CommunityListingItem";
+import "./Communities.css";
 
 function TopCommunities () {
 

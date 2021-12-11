@@ -1,13 +1,20 @@
 import Posts from "./Posts";
 import TopCommunities from "../Communities/TopCommunities";
+import Footer from "../Footer/Footer";
+import "./Posts.css";
 
 function Home () {
 
     return (
-        <div className='site-content-wrapper'>
+        <>
+        <main className='site-content-wrapper'>
             <Posts />
-            <TopCommunities />
-        </div>
+            <div>
+                <TopCommunities />
+                <Footer />
+            </div>
+        </main>
+        </>
     );
 }
 

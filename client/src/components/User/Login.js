@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import "./User.css";
+
 function Login () {
     
     return (
@@ -14,7 +16,7 @@ function Login () {
                 <input id='password' type='password'></input>
             </fieldset>
             <section>
-                <p className='account-redirect'>New to Orion? <Link to='/register'><span className='account-redirect-hightlight'>Sign Up</span></Link></p>
+                <p className='account-redirect'>New to Orion? <Link to='/signup'><span className='account-redirect-hightlight'>Sign Up</span></Link></p>
             </section>
             <button className='account-form-cta' type='submit'>Log In</button>
         </form>
