@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import Post from './Post';
+import PostListing from './PostListing';
 
-function Posts () {
+function PostsListing () {
 
     return (
         <div className='site-content'>
@@ -14,12 +14,10 @@ function Posts () {
                 </div>
             </article>
             <section className='post-content-wrapper'>
-                <Post />
-                <Post />
-                <Post />
+                <PostListing />
             </section>
         </div>
     );
 }
 
-export default Posts;
+export default PostsListing;

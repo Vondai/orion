@@ -87,18 +87,3 @@
 .post-listing-details-wrapper div p a:hover {
     color: #58b4f1dc;
 }
-
-.post-listing-cta-wrapper {
-    display: flex;
-    gap: 20px;
-    margin-top: 15px;
-}
-
-.post-listing-cta {
-    text-decoration: none;
-    color: #58b4f1dc;
-}
-
-.post-listing-cta:hover {
-    color: grey;
-}

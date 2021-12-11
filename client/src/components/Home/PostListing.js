@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import PostCta from '../Posts/PostCta';
 
-function Post () {
+function PostListing () {
 
     return (
             <section className='post-listing'>
@@ -29,21 +30,10 @@ function Post () {
                             </p>
                     </div>
                 </section>
-                <section className='post-listing-cta-wrapper'>
-                    <div className='post-listing-comment-wrapper'>
-                        <Link to='/lorem/comments' className="post-listing-cta post-listing-comment-cta">
-                            10 Comments
-                        </Link>
-                    </div>
-                    <div className='post-listing-share-wrapper'>
-                        <Link to='' className="post-listing-cta post-lising-share-cta">
-                            Share
-                        </Link>
-                    </div>
-                </section>
+                <PostCta />
             </article>
             </section>
     );
 }
 
-export default Post;
+export default PostListing;
