@@ -2,7 +2,7 @@
 
 namespace OrionApi.Models.User
 {
-    public class RegisterModel
+    public class AuthModel
     {
         [Required]
         public string Username { get; set; }

@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OrionApi.Data.Models;
 using OrionApi.Models;
 using OrionApi.Models.User;
+using OrionApi.Services.Users;
 
 namespace OrionApi.Controllers
 {
@@ -13,37 +12,41 @@ namespace OrionApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<User> userManager;
+        private readonly IUsersService usersService;
 
-        public UserController(UserManager<User> userManager)
+        public UserController(IUsersService usersService)
         {
-            this.userManager = userManager;
+            this.usersService = usersService;
         }
 
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Register(AuthModel model)
         {
-            var userExist = await userManager.FindByNameAsync(model.Username);
-            if (userExist != null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                       new Response { Status = "Error", Message = "User already exists." });
-            }
-
-            var user = new User()
-            {
-                UserName = model.Username
-            };
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = await usersService.RegisterUser(model.Username, model.Password);
             if (!result.Succeeded)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                       new Response { Status = "Error", Message = "User creation failed." });
+                       new Response { Status = "Error", Message = "Username already exists." });
             }
 
             return Ok(new Response { Status = "Success", Message = "User created successfully."});
+        }
+
+        [HttpPost]
+        [Route("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(AuthModel model)
+        {
+            var token = await usersService.LoginUser(model.Username, model.Password);
+
+            if (token == null)
+            {
+                 return NotFound(new Response { Status = "Not Found", Message = "User not found" });
+            }
+
+            return Ok(new { model.Username, token });
         }
     }
 }
