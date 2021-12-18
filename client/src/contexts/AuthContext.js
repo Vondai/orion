@@ -16,9 +16,24 @@ function AuthProvider({ children }) {
         let result = await authService.signUp(username, password);
         return result;
     }
+
+    async function signIn(username, password) {
+        let result = await authService.signIn(username, password);
+        if (result.username) {
+            setCurrentUser(result);
+        }
+        return result;
+    }
+
+    function signOut() {
+        setCurrentUser(initialAuthState);
+    }
+
     const value = {
         currentUser,
         signUp,
+        signIn,
+        signOut,
     };
 
     return (

@@ -1,6 +1,6 @@
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import "./User.css";
-import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import ErrorBox from '../Notifications/ErrorBox'
 

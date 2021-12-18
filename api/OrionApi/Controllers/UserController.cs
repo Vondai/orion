@@ -43,7 +43,7 @@ namespace OrionApi.Controllers
 
             if (token == null)
             {
-                 return NotFound(new Response { Status = "Not Found", Message = "User not found" });
+                 return NotFound(new Response { Status = "Error", Message = "Invalid username or password." });
             }
 
             return Ok(new { model.Username, token });
