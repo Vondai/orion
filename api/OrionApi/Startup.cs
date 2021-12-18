@@ -72,6 +72,13 @@ namespace OrionApi
 
             app.UseRouting();
 
+            app.UseCors(options => 
+            {
+                options.AllowAnyHeader();
+                options.AllowAnyOrigin();
+                options.AllowAnyMethod();
+            });
+
             app.UseAuthentication();
 
             app.UseAuthorization();
