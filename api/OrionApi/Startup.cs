@@ -33,6 +33,7 @@ namespace OrionApi
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<OrionDbContext>();
+
             services.Configure<IdentityOptions>(options =>
                 {
                     options.Password.RequireDigit = true;
@@ -40,7 +41,6 @@ namespace OrionApi
                     options.Password.RequireLowercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
-
                     options.Lockout.AllowedForNewUsers = false;
                 });
 
@@ -78,6 +78,7 @@ namespace OrionApi
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(name: "api", pattern: "orion.api/{controller}");
                 endpoints.MapControllers();
             });
         }

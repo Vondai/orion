@@ -38,7 +38,8 @@ namespace OrionApi.Services.Users
             {
                 var userClaims = new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName)
                 };
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
