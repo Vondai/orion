@@ -14,3 +14,20 @@ export const create = (title, description, token) => {
         console.log(error);
     });
 }
+
+export const getTop = () => {
+    return fetch(`${baseUrl}/community/listing/top`, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .catch(error => {
+        console.log(error);
+    })
+}
+
+export const get = (title) => {
+    return fetch(`${baseUrl}/community/${title}`)
+    .then(res => res.json());
+}

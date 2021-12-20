@@ -43,5 +43,28 @@ namespace OrionApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("listing/top")]
+        public IActionResult GetTop()
+        {
+            var topCommunities = communityService.GetTop();
+            return Ok(topCommunities);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{name}")]
+        public IActionResult Get(string name)
+        {
+            var community = communityService.Get(name);
+            if (community == null)
+            {
+                return NotFound(new Response { Status = "Not Found", Message = "Community does not exist." });
+            }
+
+            return Ok(community);
+        }
     }
 }

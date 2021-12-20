@@ -1,0 +1,28 @@
+.community-info {
+    color: #D7DADC;
+    text-align: center;
+    border: thin solid grey;
+    border-radius: 5px;
+    background: #1A1A1B;
+    padding: 10px 20px;
+}
+
+.info-header-text {
+    padding-bottom: 5px;
+    border-bottom: 1px solid grey;
+}
+
+.info-header-wrapper {
+    font-size: 20px;
+}
+
+.info-content-text {
+    text-align: left;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.additional-info-section {
+    display: flex;
+    justify-content: space-around;
+}

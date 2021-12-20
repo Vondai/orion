@@ -1,7 +1,21 @@
+import { useEffect, useState } from "react";
+import * as communityService from '../../services/communityService';
 import CommunityListingItem from "./CommunityListingItem";
 import "./Communities.css";
 
 function TopCommunities () {
+
+    const [topCommunitiesList, setTopCommunitiesList] = useState([]);
+
+    useEffect(() => {
+        communityService.getTop()
+        .then(data => {
+            if (data) {
+                setTopCommunitiesList(data);
+            }
+        })
+        .catch(err => console.log(err))
+    }, []);
 
     return (
         <aside className='site-highlight'>
@@ -12,11 +26,9 @@ function TopCommunities () {
             </section>
             <section className='highlight-content-wrapper'>
                 <ol className='highlight-listing'>
-                    <CommunityListingItem />
-                    <CommunityListingItem />
-                    <CommunityListingItem />
-                    <CommunityListingItem />
-                    <CommunityListingItem />
+                    {topCommunitiesList
+                        .map(x => <
+                            CommunityListingItem key={x.id} name={x.name} />)}
                 </ol>
             </section>
         </aside>

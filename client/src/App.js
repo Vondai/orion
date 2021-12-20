@@ -5,6 +5,7 @@ import Signin from './components/User/Signin';
 import Signup from './components/User/Signup';
 import Post from './components/Posts/Post';
 import Create from './components/Communities/Create';
+import Community from './components/Communities/Community';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute  from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
@@ -18,6 +19,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/community/:name' element={<Community />} />
         <Route path='/login' element={
           <PublicRoute>
             <Signin />
