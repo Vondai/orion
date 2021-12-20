@@ -5,8 +5,8 @@ namespace OrionApi.Services.Users
 {
     public interface IUsersService
     {
-        public Task<IdentityResult> RegisterUser(string username, string password);
+        public Task<IdentityResult> SignUpUser(string username, string password);
 
-        public Task<string> LoginUser(string username, string password);
+        public Task<string> SignInUser(string username, string password);
     }
 }

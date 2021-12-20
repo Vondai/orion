@@ -1,39 +1,31 @@
 import React, { useContext } from "react";
 import useLocalStorage from '../hooks/useLocalStorage'
-import * as authService from '../services/authService';
 const AuthContext = React.createContext();
+
+const initialAuthState = {
+    username: '',
+    token: '',
+};
 
 function AuthProvider({ children }) {
 
-    const initialAuthState = {
-        username: '',
-        token: '',
-    };
-
     const [currentUser, setCurrentUser] = useLocalStorage('currentUser', initialAuthState);
 
-    async function signUp(username, password) {
-        let result = await authService.signUp(username, password);
-        return result;
-    }
-
-    async function signIn(username, password) {
-        let result = await authService.signIn(username, password);
-        if (result.username) {
-            setCurrentUser(result);
-        }
-        return result;
+    function signIn(userData) {
+        setCurrentUser(userData);
     }
 
     function signOut() {
         setCurrentUser(initialAuthState);
     }
 
+    let isAuthenticated = Boolean(currentUser.username);
+
     const value = {
         currentUser,
-        signUp,
         signIn,
         signOut,
+        isAuthenticated
     };
 
     return (

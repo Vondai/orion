@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OrionApi.Data;
 using OrionApi.Data.Models;
+using OrionApi.Services.Communities;
 using OrionApi.Services.Users;
 
 namespace OrionApi
@@ -26,8 +27,6 @@ namespace OrionApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
             services.AddDbContext<OrionDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
@@ -35,17 +34,26 @@ namespace OrionApi
                 .AddEntityFrameworkStores<OrionDbContext>();
 
             services.Configure<IdentityOptions>(options =>
-                {
-                    options.Password.RequireDigit = true;
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Lockout.AllowedForNewUsers = false;
-                });
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Lockout.AllowedForNewUsers = false;
+                options.SignIn.RequireConfirmedAccount = false;
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -54,10 +62,14 @@ namespace OrionApi
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = Configuration["Jwt:Issuer"],
                         ValidAudience = Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                    });
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    };
+                });
+
+            services.AddControllers();
 
             services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<ICommunityService, CommunityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,18 +82,22 @@ namespace OrionApi
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
+            app.UseStatusCodePages();
 
-            app.UseCors(options => 
+            app.UseCors(options =>
             {
                 options.AllowAnyHeader();
                 options.AllowAnyOrigin();
                 options.AllowAnyMethod();
             });
 
+
+            app.UseRouting();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

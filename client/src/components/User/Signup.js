@@ -1,17 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import "./User.css";
-import { useAuth } from '../../contexts/AuthContext';
+import * as authService from '../../services/authService';
 import ErrorBox from '../Notifications/ErrorBox'
 
 function SignUp () {
-
-    const { signUp } = useAuth();
     const navigate = useNavigate();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    async function signUpSubmitHandler(e) {
+    function signUpSubmitHandler(e) {
         e.preventDefault();
 
         let { username, password, repeatPassword } = Object.fromEntries(new FormData(e.currentTarget));
@@ -28,21 +26,21 @@ function SignUp () {
         if (password !== repeatPassword) {
             return setError('Passwords do not match.');
         }
-
-        try {
-            setError('');
-            setLoading(true);
-            let result = await signUp(username, password);
-            setLoading(false);
-            if (result.status === 'Error') {
-                return setError(result.message);
+        setLoading(true);
+        authService.signUp(username, password)
+        .then(result => {
+            if (result.status === 'Success') {
+                navigate('/login');
+            } else {
+                setError(result.message);
+                setLoading(false);
             }
-            navigate('/login');
-
-        } catch (error) {
-            setError("Failed to create an account.");
+        })
+        .catch(error => {
+            console.log(error);
+            setError('A problem occured while creating an account.')
             setLoading(false);
-        }
+        })
     }
 
     return(

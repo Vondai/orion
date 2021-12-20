@@ -2,16 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import "./User.css";
 import { useAuth } from '../../contexts/AuthContext';
+import * as authService from '../../services/authService';
 import ErrorBox from '../Notifications/ErrorBox';
 
-function Login () {
-
-    const { signIn } = useAuth();
+function Signin () {
     const navigate = useNavigate();
+    const { signIn } = useAuth();
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
 
-    async function signInSubmitHandler(e) {
+    function signInSubmitHandler(e) {
         e.preventDefault();
 
         let { username, password } = Object.fromEntries(new FormData(e.currentTarget));
@@ -19,20 +19,17 @@ function Login () {
             return setError('Please enter an username and/or password.');
         }
 
-        try {
             setError('');
             setLoading(true);
-            let result = await signIn(username, password);
-            setLoading(false);
-            if (result.status === 'Error') {
-                return setError(result.message);
-            }
-            navigate('/');
-
-        } catch (error) {
-            setError("Failed to sign in.");
-            setLoading(false);
-        }
+            authService.signIn(username, password)
+            .then(authData => {
+                signIn(authData);
+                navigate('/');
+            })
+            .catch(error => {
+                setError(error.message);
+                setLoading(false);
+            })
     }
     
     return (
@@ -57,4 +54,4 @@ function Login () {
     );
 }
 
-export default Login;
+export default Signin;

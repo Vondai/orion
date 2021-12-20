@@ -1,0 +1,61 @@
+.community-section {
+    color: #D7DADC;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.community-create-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.community-create-field {
+    font-size: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+}
+
+.community-input {
+    width: 20%;
+    height: 35px;
+    border-radius: 3px;
+    font-size: 18px;
+}
+
+.community-input-label {
+    margin-bottom: 10px;
+}
+
+.community-textarea {
+    resize: none;
+    width: 20%;
+    border-radius: 3px;
+    font-size: 18px;
+}
+
+.create-cta {
+    align-self: center;
+    padding: 0 105px;
+    line-height: 36px;
+    border-radius: 20px;
+    background: #58b4f1dc;
+    color: #D7DADC;
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 25px;
+}
+
+.create-cta:hover {
+    background: white;
+    cursor: pointer;
+    color: #58b4f1dc;
+}

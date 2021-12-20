@@ -33,6 +33,7 @@ function SignedInNavigation({ username }) {
                 <span className="profile-details">Signed in as {username}</span>
                 <Link to="/lorem">My Communities</Link>
                 <Link to="/lorem">My Posts</Link>
+                <Link to="/community/create">Create a community</Link>
                 <button className="cta-signout" onClick={signOutHandler}>Sign Out</button>
             </div>
         </div>

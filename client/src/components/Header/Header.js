@@ -5,7 +5,7 @@ import SignedInNavigation from './SignedInNavigation'
 
 function Header () {
 
-    const { currentUser } = useAuth();
+    const { currentUser, isAuthenticated } = useAuth();
 
     return (
         <header className="site-header">
@@ -16,7 +16,7 @@ function Header () {
             </section>
             <nav className="nav-bar">
                 {
-                    currentUser.username
+                    isAuthenticated
                     ? <SignedInNavigation username={currentUser.username} /> 
                     :<>
                         <Link className="cta-login" to="/login">Log in</Link>
