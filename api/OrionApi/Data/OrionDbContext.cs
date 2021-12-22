@@ -24,6 +24,12 @@ namespace OrionApi.Data
                 .WithMany(c => c.Posts)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Post>()
+                .HasOne(p => p.Author)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Comment>()
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)

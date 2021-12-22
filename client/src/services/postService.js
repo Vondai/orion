@@ -14,3 +14,11 @@ export const create = (title, content, community, token) => {
         console.log(error);
     });
 }
+
+export const getAll = () => {
+    return fetch(`${baseUrl}/post/all`)
+    .then(res => res.json())
+    .catch(error => {
+        console.log(error);
+    });
+}

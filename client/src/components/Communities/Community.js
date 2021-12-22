@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AboutCommunity from "./AboutCommunity";
-import PostsListing from "../Home/PostsListing";
+import PostsListingNavigation from "../Posts/PostsListingNavigation";
+import PostListing from "../Posts/PostListing";
 import Footer from "../Footer/Footer";
 import PageNotFound from "../PageNotFound";
 import { useAuth } from "../../contexts/AuthContext";
@@ -14,7 +15,7 @@ function Community() {
 
     const { currentUser } = useAuth();
     const { communityName } = useParams();
-    const [community, setCommunity] = useState({});
+    const [community, setCommunity] = useState({posts: []});
     const [errorPage, setErrorPage] = useState(false);
     const [ isOpen, setIsOpen ] = useState(false);
     const [postError, setPostError] = useState('');
@@ -57,7 +58,12 @@ function Community() {
             {errorPage ? 
                 <PageNotFound /> : 
                 <main className='site-content-wrapper'>
-                    <PostsListing />
+                    <div className='main-content'>
+                        <PostsListingNavigation />
+                        <section className='post-content-wrapper'>
+                            {community.posts.map(post => <PostListing key={post.id} post={post}/>)}
+                        </section>
+                    </div>
                     <div className='side-wrapper'>
                         <AboutCommunity community={community} createPostHandler={createPostHandler} />
                         <Footer />

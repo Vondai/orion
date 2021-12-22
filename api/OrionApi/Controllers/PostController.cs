@@ -36,7 +36,25 @@ namespace OrionApi.Controllers
             var communityId = communityService.GetId(model.Community);
             var postId = await postService.Create(model.Title, model.Content, communityId, userId);
 
-            return Created("/post", postId);
+            return Created($"/community/{model.Community}/{postId}", postId);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{id}")]
+        public IActionResult Get(string id)
+        {
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("all")]
+        public IActionResult GetAll()
+        {
+            var posts = postService.GetAll();
+            return Ok(posts);
         }
     }
 }

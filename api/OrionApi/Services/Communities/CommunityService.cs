@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OrionApi.Data;
 using OrionApi.Data.Models;
 using OrionApi.Models.Communities;
+using OrionApi.Models.Post;
 
 namespace OrionApi.Services.Communities
 {
@@ -64,7 +66,18 @@ namespace OrionApi.Services.Communities
                     Description = x.Description,
                     Members = x.Members.Count,
                     IsCreator = x.CreatorId == userId,
-                    IsMember = x.Members.Any(m => m.Id == userId)
+                    IsMember = x.Members.Any(m => m.Id == userId),
+                    Posts = x.Posts
+                        .Select(p => new PostListingModel
+                        {
+                            Id = p.Id,
+                            Title = p.Title,
+                            AuthorName = data.Posts.Where(post => post.Id == p.Id).Select(a => a.Author.UserName).FirstOrDefault(),
+                            CommentsCount = p.Comments.Count,
+                            CreatedOn = p.CreatedOn.ToString("g", new CultureInfo("en-US")),
+                        })
+                        .Take(5)
+                        .ToList()
                 })
             .FirstOrDefault();
 

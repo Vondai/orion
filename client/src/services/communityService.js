@@ -27,8 +27,8 @@ export const getTop = () => {
     })
 }
 
-export const get = (title, token) => {
-    return fetch(`${baseUrl}/community/${title}`, {
+export const get = (communityName, token) => {
+    return fetch(`${baseUrl}/community/${communityName}`, {
         headers: {
             'Authorization': `Bearer ${token}`,
         }

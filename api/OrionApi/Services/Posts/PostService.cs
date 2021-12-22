@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using OrionApi.Data;
 using OrionApi.Data.Models;
+using OrionApi.Models.Post;
 
 namespace OrionApi.Services.Posts
 {
@@ -30,5 +34,20 @@ namespace OrionApi.Services.Posts
 
             return post.Id;
         }
+
+        public ICollection<PostListingModel> GetAll()
+            => data.Posts
+                .OrderBy(p => p.CreatedOn)
+                .Select(x => new PostListingModel
+                {
+                    Id = x.Id,
+                    AuthorName = x.Author.UserName,
+                    Title = x.Title,
+                    CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
+                    CommentsCount = x.Comments.Count,
+                    CommunityName = x.Community.Name
+                })
+                .Take(5)
+                .ToList();
     }
 }
