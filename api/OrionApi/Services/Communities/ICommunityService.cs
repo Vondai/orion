@@ -10,6 +10,10 @@ namespace OrionApi.Services.Communities
 
         public ICollection<TopCommunityModel> GetTop();
 
-        public CommunityModel Get(string name);
+        public CommunityModel Get(string name, string userId = null);
+
+        public bool IsMember(string communityName, string userId = null);
+
+        public string GetId(string communityName);
     }
 }

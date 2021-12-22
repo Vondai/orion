@@ -20,7 +20,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/community/:name' element={<Community />} />
+          <Route path='/community/:communityName' element={<Community />} />
           <Route path='/login' element={
             <PublicRoute>
               <Signin />

@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using OrionApi.Data;
 using OrionApi.Data.Models;
 using OrionApi.Services.Communities;
+using OrionApi.Services.Posts;
 using OrionApi.Services.Users;
 
 namespace OrionApi
@@ -70,6 +71,7 @@ namespace OrionApi
 
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<ICommunityService, CommunityService>();
+            services.AddTransient<IPostService, PostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

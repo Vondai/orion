@@ -1,0 +1,95 @@
+.create-post-wrapper {
+    color: whitesmoke;
+    font-size: 20px;
+    font-weight: 700;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #58b4f1dc;
+    padding: 50px 100px;
+    z-index: 100;
+    border: 2px solid grey;
+    border-radius: 6px;
+    width: 60%;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .7);
+    z-index: 100;
+}
+
+.create-post-form fieldset {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    gap: 10px;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.create-post-title-wrapper,
+.create-post-content-wrapper {
+    padding: 10px 40px;
+}
+
+#content {
+    resize: none;
+}
+
+#title {
+    height: 30px;
+}
+
+#title, #content {
+    font-size: 18px;
+}
+
+.create-form-cta {
+    width: 89%;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 6px 0px;
+    margin: 0 auto;
+}
+
+.create-form-cta:hover {
+    color: whitesmoke;
+    background: #58b4f1dc;
+}
+
+.create-cta-wrapper {
+    display: flex;
+}
+
+.close-cta-wrapper {
+    position: absolute;
+    left: 90%;
+    top: 4%;
+    display: flex;
+}
+
+.close-cta-wrapper button {
+    border-radius: 15px;
+}
+
+.close-cta-wrapper button:hover {
+    cursor: pointer;
+}
+
+.close-cta-wrapper button i {
+    font-size: 20px;
+    color: red;
+}
+
+#title {
+    text-align: center;
+}

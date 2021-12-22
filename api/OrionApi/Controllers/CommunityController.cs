@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -58,7 +57,8 @@ namespace OrionApi.Controllers
         [Route("{name}")]
         public IActionResult Get(string name)
         {
-            var community = communityService.Get(name);
+            var userId = this.User.Id();
+            var community = communityService.Get(name, userId);
             if (community == null)
             {
                 return NotFound(new Response { Status = "Not Found", Message = "Community does not exist." });

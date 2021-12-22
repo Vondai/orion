@@ -54,7 +54,7 @@ namespace OrionApi.Services.Communities
                 })
                 .ToList();
 
-        public CommunityModel Get(string name)
+        public CommunityModel Get(string name, string userId = null)
             => data.Communities
                 .Where(c => c.Name == name)
                 .Select(x => new CommunityModel
@@ -62,8 +62,21 @@ namespace OrionApi.Services.Communities
                     Name = x.Name,
                     CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
                     Description = x.Description,
-                    Members = x.Members.Count
+                    Members = x.Members.Count,
+                    IsCreator = x.CreatorId == userId,
+                    IsMember = x.Members.Any(m => m.Id == userId)
                 })
             .FirstOrDefault();
+
+        public bool IsMember(string communityName, string userId = null)
+            => this.data.Users
+                .Where(u => u.Id == userId)
+                .Any(u => u.CommunitiesMember.Any(c => c.Name == communityName));
+
+        public string GetId(string communityName)
+            => data.Communities
+                .Where(c => c.Name == communityName)
+                .Select(x => x.Id)
+                .FirstOrDefault();
     }
 }

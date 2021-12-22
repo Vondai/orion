@@ -4,38 +4,70 @@ import AboutCommunity from "./AboutCommunity";
 import PostsListing from "../Home/PostsListing";
 import Footer from "../Footer/Footer";
 import PageNotFound from "../PageNotFound";
+import { useAuth } from "../../contexts/AuthContext";
+import CreateModal from "../Posts/CreateModal";
 import * as communityService from '../../services/communityService';
+import * as postService from '../../services/postService';
 import './Community.css';
 
 function Community() {
 
-    const { name } = useParams();
+    const { currentUser } = useAuth();
+    const { communityName } = useParams();
     const [community, setCommunity] = useState({});
-    const [error, setError] = useState(false);
+    const [errorPage, setErrorPage] = useState(false);
+    const [ isOpen, setIsOpen ] = useState(false);
+    const [postError, setPostError] = useState('');
+
+    const token = currentUser.token;
 
     useEffect(() => {
-        communityService.get(name)
+        communityService.get(communityName, token)
         .then(data => {
             if (data.status !== "Not Found") {
                 setCommunity(data)
             } else {
-                setError(true)
+                setErrorPage(true)
             }
         })
         .catch(err => console.log(err))
-    }, [name])
+    }, [communityName, token]);
+
+    function createPostHandler() {
+        setPostError('');
+        setIsOpen(true);
+    }
+
+    function createPostSubmitHandler(e) {
+        e.preventDefault();
+        const { title, content } = Object.fromEntries(new FormData(e.currentTarget));
+        if (title.length < 5) {
+            return setPostError('Title must be atleast five characters.');
+        }
+        if (content.length < 10) {
+            return setPostError('Content must be atleast ten characters.');
+        }
+        postService.create(title, content, communityName, token)
+        .then(result => console.log(result))
+    }
 
 
     return (
         <>
-            {error ? 
+            {errorPage ? 
                 <PageNotFound /> : 
                 <main className='site-content-wrapper'>
                     <PostsListing />
-                        <div className='side-wrapper'>
-                            <AboutCommunity community={community}/>
-                            <Footer />
-                        </div>
+                    <div className='side-wrapper'>
+                        <AboutCommunity community={community} createPostHandler={createPostHandler} />
+                        <Footer />
+                    </div>
+                    <CreateModal open={isOpen}
+                     onClose={() => setIsOpen(false)} 
+                     createPostSubmitHandler={createPostSubmitHandler}
+                     postError={postError}>
+
+                    </CreateModal>
                 </main>}
         </>
     );
