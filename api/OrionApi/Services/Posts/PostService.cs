@@ -47,7 +47,7 @@ namespace OrionApi.Services.Posts
                     CommentsCount = x.Comments.Count,
                     CommunityName = x.Community.Name
                 })
-                .Take(5)
+                .Take(6)
                 .ToList();
     }
 }

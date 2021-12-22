@@ -68,6 +68,8 @@ namespace OrionApi.Services.Communities
                     IsCreator = x.CreatorId == userId,
                     IsMember = x.Members.Any(m => m.Id == userId),
                     Posts = x.Posts
+                        .OrderBy(p => p.CreatedOn)
+                        .ThenBy(p => p.Title)
                         .Select(p => new PostListingModel
                         {
                             Id = p.Id,

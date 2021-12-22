@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AboutCommunity from "./AboutCommunity";
 import PostsListingNavigation from "../Posts/PostsListingNavigation";
 import PostListing from "../Posts/PostListing";
@@ -13,6 +13,7 @@ import './Community.css';
 
 function Community() {
 
+    const navigate = useNavigate();
     const { currentUser } = useAuth();
     const { communityName } = useParams();
     const [community, setCommunity] = useState({posts: []});
@@ -49,7 +50,8 @@ function Community() {
             return setPostError('Content must be atleast ten characters.');
         }
         postService.create(title, content, communityName, token)
-        .then(result => console.log(result))
+        .then(navigate('/'))
+        .catch(err => console.log(err));
     }
 
 

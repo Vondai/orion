@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrionApi.Infrastructure;
 using OrionApi.Models;
@@ -36,7 +37,8 @@ namespace OrionApi.Controllers
             var communityId = communityService.GetId(model.Community);
             var postId = await postService.Create(model.Title, model.Content, communityId, userId);
 
-            return Created($"/community/{model.Community}/{postId}", postId);
+            var response = new Response { Status = "Success", Message = postId };
+            return StatusCode(StatusCodes.Status201Created, response);
         }
 
         [HttpGet]
