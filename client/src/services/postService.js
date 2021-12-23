@@ -22,3 +22,11 @@ export const getAll = () => {
         console.log(error);
     });
 }
+
+export const getById = (postId) => {
+    return fetch(`${baseUrl}/post/${postId}`)
+    .then(res => res.json())
+    .catch(error => {
+        console.log(error);
+    });
+}

@@ -31,7 +31,7 @@ function App() {
               <Signup />
             </PublicRoute>
           } />
-          <Route path='/lorem/comments' element={<Post />} />
+          <Route path='/community/:communityName/comments/:postId' element={<Post />} />
           <Route path='/community/create' element={
             <PrivateRoute>
               <Create />

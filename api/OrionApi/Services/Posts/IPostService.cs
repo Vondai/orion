@@ -11,5 +11,7 @@ namespace OrionApi.Services.Posts
         public ICollection<PostListingModel> GetAll();
 
         public ICollection<PostListingModel> GetByCommunity(string communityName);
+
+        public PostDetailsModel GetById(string postId);
     }
 }

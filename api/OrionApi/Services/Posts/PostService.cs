@@ -65,5 +65,19 @@ namespace OrionApi.Services.Posts
                 })
                 .Take(6)
                 .ToList();
+
+        public PostDetailsModel GetById(string postId)
+            => data.Posts
+                .Where(p => p.Id == postId)
+                .Select(x => new PostDetailsModel
+                {
+                    Id = x.Id,
+                    AuthorName = x.Author.UserName,
+                    CommentsCount = x.Comments.Count,
+                    CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
+                    Description = x.Description,
+                    Title = x.Title,
+                })
+                .FirstOrDefault();
     }
 }

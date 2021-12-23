@@ -58,5 +58,18 @@ namespace OrionApi.Controllers
             var posts = postService.GetByCommunity(communityName);
             return Ok(posts);
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{postId}")]
+        public IActionResult GetById(string postId)
+        {
+            var post = postService.GetById(postId);
+            if (post == null)
+            {
+                return NotFound(new Response { Status = "Error", Message = "Post is locked or deleted." });
+            }
+            return Ok(post);
+        }
     }
 }
