@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using OrionApi.Data;
 using OrionApi.Data.Models;
 using OrionApi.Models.Communities;
-using OrionApi.Models.Post;
 
 namespace OrionApi.Services.Communities
 {
@@ -46,7 +44,7 @@ namespace OrionApi.Services.Communities
 
         public ICollection<TopCommunityModel> GetTop()
               => data.Communities
-                .OrderBy(c => c.Members.Count)
+                .OrderByDescending(c => c.Members.Count)
                 .ThenBy(c => c.Name)
                 .Take(5)
                 .Select(x => new TopCommunityModel
@@ -80,5 +78,25 @@ namespace OrionApi.Services.Communities
                 .Where(c => c.Name == communityName)
                 .Select(x => x.Id)
                 .FirstOrDefault();
+
+        public async Task<string> Join(string communityName, string userId)
+        {
+            var community = data.Communities.Where(c => c.Name == communityName).FirstOrDefault();
+            if (community == null)
+            {
+                throw new InvalidOperationException("Community does not exist.");
+            }
+            var isMember = data.Communities.Where(c => c.Name == communityName)
+                .Any(c => c.Members.Any(m => m.Id == userId));
+            if (isMember)
+            {
+                throw new InvalidOperationException("User is already a member.");
+            }
+            var user = await data.Users.FindAsync(userId);
+            community.Members.Add(user);
+            await data.SaveChangesAsync();
+
+            return "User joined successfuly";
+        }
     }
 }

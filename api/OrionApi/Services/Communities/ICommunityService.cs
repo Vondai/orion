@@ -15,5 +15,7 @@ namespace OrionApi.Services.Communities
         public bool IsMember(string communityName, string userId = null);
 
         public string GetId(string communityName);
+
+        public Task<string> Join(string communityName, string userId);
     }
 }

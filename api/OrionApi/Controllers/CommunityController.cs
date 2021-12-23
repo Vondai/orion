@@ -66,5 +66,27 @@ namespace OrionApi.Controllers
 
             return Ok(communityDetails);
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("join")]
+        public async Task<IActionResult> Join([FromBody] string communityName)
+        {
+            var userId = this.User.Id();
+            var response = new Response();
+            try
+            {
+                var result = await communityService.Join(communityName, userId);
+                response.Status = "Success";
+                response.Message = result;
+                return Ok(response);
+            }
+            catch (InvalidOperationException e)
+            {
+                response.Status = "Error";
+                response.Message = e.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            }
+        }
     }
 }

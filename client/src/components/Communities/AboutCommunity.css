@@ -65,3 +65,7 @@
 .join-cta {
     background: rgba(18, 227, 241, 0.5);
 }
+
+.join-cta:disabled {
+    cursor: wait;
+}

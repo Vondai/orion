@@ -40,3 +40,18 @@ export const getCommunityPosts = (communityName) => {
     return fetch(`${baseUrl}/post/get/${communityName}`)
     .then(res => res.json());
 }
+
+export const joinCommunity = (communityName, token) => {
+    return fetch(`${baseUrl}/community/join`, {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(communityName)
+    })
+    .then(res => res.json())
+    .catch(error => {
+        console.log(error);
+    });
+}
