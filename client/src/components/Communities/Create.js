@@ -35,7 +35,7 @@ function Create() {
                 setError(result.message);
                 setLoading(false);
             } else {
-                navigate('/');
+                navigate(`/community/${title}`);
             }
         } catch(error) {
             console.log(error);
