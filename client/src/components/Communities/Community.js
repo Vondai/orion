@@ -68,8 +68,7 @@ function Community() {
     postService
       .create(title, content, communityName, token)
       .then((data) => {
-        console.log(data);
-        navigate("/");
+        navigate(`/community/${communityName}/comments/${data.message}`);
       })
       .catch((err) => {
         setLoading(false);
