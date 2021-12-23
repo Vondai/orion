@@ -43,19 +43,19 @@ namespace OrionApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("{id}")]
-        public IActionResult Get(string id)
-        {
-
-            return Ok();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
         [Route("all")]
         public IActionResult GetAll()
         {
             var posts = postService.GetAll();
+            return Ok(posts);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("get/{communityName}")]
+        public IActionResult GetByCommunity(string communityName)
+        {
+            var posts = postService.GetByCommunity(communityName);
             return Ok(posts);
         }
     }

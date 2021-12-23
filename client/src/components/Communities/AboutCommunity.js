@@ -1,6 +1,6 @@
 import './AboutCommunity.css';
 
-function AboutCommunity({ community, createPostHandler }) {
+function AboutCommunity({ communityDetails, createPostHandler }) {
 
     const joinBtn = (
         <div>
@@ -36,25 +36,25 @@ function AboutCommunity({ community, createPostHandler }) {
         <aside className='community-info'>
             <section className='info-header-wrapper'>
                 <p className='info-header-text'>
-                    About {community.name}
+                    About {communityDetails.name}
                 </p>
             </section>
             <section className='info-content-wrapper'>
                 <p className='info-content-text'>
-                    {community.description}
+                    {communityDetails.description}
                 </p>
             </section>
             <section className='additional-info-section'>
                 <div>
-                    {community.members} member/s
+                    {communityDetails.members} member/s
                 </div>
                 <div>
-                    Created {community.createdOn}
+                    Created {communityDetails.createdOn}
                 </div>
             </section>
             <section className='community-cta-section'>
-                {community.isMember ? createPostBtn : joinBtn}
-                {community.isCreator && creatorBtns}
+                {communityDetails.userIsMember ? createPostBtn : joinBtn}
+                {communityDetails.userIsCreator && creatorBtns}
             </section>
         </aside>
     );

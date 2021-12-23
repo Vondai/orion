@@ -55,16 +55,16 @@ namespace OrionApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("{name}")]
-        public IActionResult Get(string name)
+        public IActionResult GetDetails(string name)
         {
             var userId = this.User.Id();
-            var community = communityService.Get(name, userId);
-            if (community == null)
+            var communityDetails = communityService.GetDetails(name, userId);
+            if (communityDetails == null)
             {
                 return NotFound(new Response { Status = "Not Found", Message = "Community does not exist." });
             }
 
-            return Ok(community);
+            return Ok(communityDetails);
         }
     }
 }

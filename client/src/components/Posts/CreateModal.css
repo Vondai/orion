@@ -64,6 +64,11 @@
 .create-form-cta:hover {
     color: whitesmoke;
     background: #58b4f1dc;
+    cursor: pointer;
+}
+
+.create-form-cta:disabled {
+    cursor: wait;
 }
 
 .create-cta-wrapper {
@@ -83,6 +88,10 @@
 
 .close-cta-wrapper button:hover {
     cursor: pointer;
+}
+
+.close-cta-wrapper button:disabled {
+    cursor: wait;
 }
 
 .close-cta-wrapper button i {

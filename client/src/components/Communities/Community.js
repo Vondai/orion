@@ -16,24 +16,34 @@ function Community() {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
     const { communityName } = useParams();
-    const [community, setCommunity] = useState({posts: []});
+    const [communityDetails, setCommunityDetails] = useState({});
+    const [posts, setPosts] = useState([]);
     const [errorPage, setErrorPage] = useState(false);
     const [ isOpen, setIsOpen ] = useState(false);
     const [postError, setPostError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const token = currentUser.token;
 
     useEffect(() => {
-        communityService.get(communityName, token)
+        communityService.getCommunityDetails(communityName, token)
         .then(data => {
             if (data.status !== "Not Found") {
-                setCommunity(data)
+                setCommunityDetails(data)
             } else {
                 setErrorPage(true)
             }
         })
         .catch(err => console.log(err))
     }, [communityName, token]);
+
+    useEffect(() => {
+        communityService.getCommunityPosts(communityName)
+        .then(data => {
+            setPosts(data);
+        })
+        .catch(err => console.log(err))
+    }, [communityName]);
 
     function createPostHandler() {
         setPostError('');
@@ -49,9 +59,16 @@ function Community() {
         if (content.length < 10) {
             return setPostError('Content must be atleast ten characters.');
         }
+        setLoading(true);
         postService.create(title, content, communityName, token)
-        .then(navigate('/'))
-        .catch(err => console.log(err));
+        .then(data => {
+            console.log(data);
+            navigate('/');
+        })
+        .catch(err => {
+            setLoading(false);
+            console.log(err)
+        });
     }
 
 
@@ -63,18 +80,18 @@ function Community() {
                     <div className='main-content'>
                         <PostsListingNavigation />
                         <section className='post-content-wrapper'>
-                            {community.posts.map(post => <PostListing key={post.id} post={post}/>)}
+                            {posts.map(post => <PostListing key={post.id} post={post}/>)}
                         </section>
                     </div>
                     <div className='side-wrapper'>
-                        <AboutCommunity community={community} createPostHandler={createPostHandler} />
+                        <AboutCommunity communityDetails={communityDetails} createPostHandler={createPostHandler} />
                         <Footer />
                     </div>
                     <CreateModal open={isOpen}
                      onClose={() => setIsOpen(false)} 
                      createPostSubmitHandler={createPostSubmitHandler}
-                     postError={postError}>
-
+                     postError={postError}
+                     loading={loading}>
                     </CreateModal>
                 </main>}
         </>

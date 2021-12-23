@@ -9,5 +9,7 @@ namespace OrionApi.Services.Posts
         public Task<string> Create(string title, string content, string communityId, string userId);
 
         public ICollection<PostListingModel> GetAll();
+
+        public ICollection<PostListingModel> GetByCommunity(string communityName);
     }
 }

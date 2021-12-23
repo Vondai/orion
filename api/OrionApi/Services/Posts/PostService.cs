@@ -37,7 +37,7 @@ namespace OrionApi.Services.Posts
 
         public ICollection<PostListingModel> GetAll()
             => data.Posts
-                .OrderBy(p => p.CreatedOn)
+                .OrderByDescending(p => p.CreatedOn)
                 .Select(x => new PostListingModel
                 {
                     Id = x.Id,
@@ -46,6 +46,22 @@ namespace OrionApi.Services.Posts
                     CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
                     CommentsCount = x.Comments.Count,
                     CommunityName = x.Community.Name
+                })
+                .Take(6)
+                .ToList();
+
+        public ICollection<PostListingModel> GetByCommunity(string communityName)
+            => data.Posts
+                .Where(p => p.Community.Name == communityName)
+                .OrderByDescending(p => p.CreatedOn)
+                .ThenBy(p => p.Title)
+                .Select(x => new PostListingModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    CommentsCount = x.Comments.Count,
+                    CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
+                    AuthorName = x.Author.UserName,
                 })
                 .Take(6)
                 .ToList();

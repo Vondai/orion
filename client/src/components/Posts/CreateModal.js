@@ -5,7 +5,8 @@ function CreateModal({
         open,
         onClose,
         createPostSubmitHandler,
-        postError }) {
+        postError,
+        loading }) {
 
     if (!open) return null;
 
@@ -15,7 +16,7 @@ function CreateModal({
         <div className='create-post-wrapper'>
             <ErrorBox message={postError} />
             <div className='close-cta-wrapper'>
-                <button onClick={onClose}>
+                <button onClick={onClose} disabled={loading}>
                     <i className="fas fa-times"></i>
                 </button>
             </div>
@@ -33,7 +34,7 @@ function CreateModal({
                     </fieldset>
                 </div>
                 <div className='create-cta-wrapper'>
-                    <button className='create-form-cta' type='submit'>Create</button>
+                    <button className='create-form-cta' type='submit' disabled={loading}>Create</button>
                 </div>
             </form>
         </div>

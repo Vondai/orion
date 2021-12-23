@@ -56,7 +56,7 @@ namespace OrionApi.Services.Communities
                 })
                 .ToList();
 
-        public CommunityModel Get(string name, string userId = null)
+        public CommunityModel GetDetails(string name, string userId = null)
             => data.Communities
                 .Where(c => c.Name == name)
                 .Select(x => new CommunityModel
@@ -65,21 +65,8 @@ namespace OrionApi.Services.Communities
                     CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
                     Description = x.Description,
                     Members = x.Members.Count,
-                    IsCreator = x.CreatorId == userId,
-                    IsMember = x.Members.Any(m => m.Id == userId),
-                    Posts = x.Posts
-                        .OrderBy(p => p.CreatedOn)
-                        .ThenBy(p => p.Title)
-                        .Select(p => new PostListingModel
-                        {
-                            Id = p.Id,
-                            Title = p.Title,
-                            AuthorName = data.Posts.Where(post => post.Id == p.Id).Select(a => a.Author.UserName).FirstOrDefault(),
-                            CommentsCount = p.Comments.Count,
-                            CreatedOn = p.CreatedOn.ToString("g", new CultureInfo("en-US")),
-                        })
-                        .Take(5)
-                        .ToList()
+                    UserIsCreator = x.CreatorId == userId,
+                    UserIsMember = x.Members.Any(m => m.Id == userId)
                 })
             .FirstOrDefault();
 
