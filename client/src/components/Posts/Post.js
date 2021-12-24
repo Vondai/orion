@@ -40,6 +40,13 @@ function Post() {
       </div>
     </section>
   );
+  const noCommentsSection = (
+    <div className='no-comments-wrapper'>
+      <i className="fas fa-comments"></i>
+      <p className='no-comments-text'>No Comments Yet</p>
+      <p className='no-comments-info'>Be the first to share what you think!</p>
+    </div>
+  );
   return (
     <main className="post">
       <section className="post-content">
@@ -70,16 +77,27 @@ function Post() {
           communityName={communityName}
         />
         {isAuthenticated ? leaveCommentArea : guestNavigation}
+        <section className='post-comments-sorting-wrapper'>
+          <div className='comments-sorting-picker'>
+            <button className='comments-sorting-btn' type='button'>
+              <span className='comments-sorting-text'>Sort by: Best</span>
+            </button>
+            <i className="fas fa-sort-down"></i>
+          </div>
+        </section>
+        <div className='sorting-picker'>
+          <button className='sorting-item'><Link to='?sort=Best'>Best</Link></button>
+          <button className='sorting-item'><Link to='?sort=Best'>Top</Link></button>
+          <button className='sorting-item'><Link to='?sort=new'>New</Link></button>
+          <button className='sorting-item'><Link to='?sort=old'>Old</Link></button>
+        </div>
         <section className="post-comments-wrapper">
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
+          {post.commentsCount === 0 ? 
+          noCommentsSection :
+          < Comment />}
         </section>
       </section>
-      <div>
+      <div className='side-wrapper'>
         <Footer />
       </div>
     </main>

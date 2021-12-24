@@ -47,8 +47,9 @@
 .post-leave-comment {
     background: #1A1A1B;
     resize: none;
-    color: white;
+    color: #C8CBCD;
     font-size: 20px;
+    border-radius: 6px;
 }
 
 .post-leave-comment:focus-visible {
@@ -120,4 +121,70 @@
 .post-comment-signup:hover {
     cursor: pointer;
     background: white;
+}
+
+.no-comments-wrapper {
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #666768;
+    font-size: 17px;
+}
+
+.no-comments-wrapper i {
+    font-size: 40px;
+}
+
+.post-comments-sorting-wrapper {
+    border-bottom: thin solid grey;
+    padding: 10px 0px;
+    position: relative;
+}
+
+.comments-sorting-btn {
+    border: none;
+    background: #1A1A1B;
+    padding: 1px 5px 1px 0px;
+}
+
+.comments-sorting-btn:hover {
+    cursor: pointer;
+}
+
+.comments-sorting-text {
+    color: #58b4f1dc;
+    font-size: 14px;
+}
+
+.comments-sorting-picker {
+    display: flex;
+    align-items: center;
+}
+
+.comments-sorting-picker i {
+    font-size: 14px;
+    color: #58b4f1dc;
+}
+
+.sorting-picker {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    z-index: 10;
+    position: absolute;
+    top: 475px;
+    background: #1A1A1B;
+    box-shadow: 4px 1px 10px 1px grey;
+    border-radius: 6px;
+}
+
+.sorting-item {
+    padding: 10px;
+    margin: 0;
+    border: 0;
+    background: #1A1A1B;
+    border-radius: 6px;
+
 }
