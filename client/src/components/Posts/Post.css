@@ -48,7 +48,11 @@
     background: #1A1A1B;
     resize: none;
     color: white;
-    font-size: 18px;
+    font-size: 20px;
+}
+
+.post-leave-comment:focus-visible {
+    outline: none;
 }
 
 .post-leave-comment-wrapper {
@@ -57,4 +61,63 @@
     color: #C8CBCD;
     gap: 8px;
     margin-top: 15px;
+}
+
+.post-comment-anonymous {
+    border: thin solid grey;
+    border-radius: 3px;
+    margin-top: 60px;
+    padding: 15px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-comment-anonymous-text {
+    color: #818384;
+    font-size: 17px;
+}
+
+.post-comment-cta-wrapper {
+    display: flex;
+    gap: 7px;
+}
+
+.post-comment-login,
+.post-comment-signup {
+    border-radius: 15px;
+    padding: 6px 15px;
+    font-weight: 700;
+}
+
+.post-comment-login a,
+.post-comment-signup a {
+    text-decoration: none;
+}
+
+.post-comment-login a {
+    color: #D7DADC;
+}
+
+.post-comment-signup a {
+    color: #1A1A2B;
+}
+
+.post-comment-login {
+    background: #212223;
+    border: 1px solid white;
+}
+
+.post-comment-login:hover {
+    background: #58b4f1dc;
+    cursor: pointer;
+}
+
+.post-comment-signup {
+    background: #C8CBCD;
+}
+
+.post-comment-signup:hover {
+    cursor: pointer;
+    background: white;
 }

@@ -99,7 +99,7 @@ function Community() {
 
   return (
     <>
-			<NotificationModal message={notificationMessage} />
+			<NotificationModal message={notificationMessage}/>
       <main className="site-content-wrapper">
         <div className="main-content">
           <PostsListingNavigation />

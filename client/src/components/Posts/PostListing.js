@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PostCta from "./PostCta";
 import "./Posts.css";
 
 function PostListing({ post }) {
+  const navigate = useNavigate();
+
   const linkToCommunity = (
     <div className="post-listing-community-wrapper">
       <p className="post-listing-community-content">
@@ -13,8 +15,15 @@ function PostListing({ post }) {
     </div>
   );
 
+  function postClickHandler (e) {
+    if (e.target.tagName === 'A') return
+    post.communityName ?
+    navigate(`/community/${post.communityName}/comments/${post.id}`) : 
+    navigate(`comments/${post.id}`)
+  }
+
   return (
-    <section className="post-listing">
+    <section className="post-listing" onClick={postClickHandler}>
       <article className="post-listing-logo-wrapper">
         <i className="fas fa-robot"></i>
       </article>
