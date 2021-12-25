@@ -169,15 +169,19 @@
 }
 
 .sorting-picker {
-    display: flex;
-    flex-direction: column;
+    display: none;
     width: 100px;
     z-index: 10;
     position: absolute;
-    top: 475px;
+    top: 35px;
     background: #1A1A1B;
-    box-shadow: 4px 1px 10px 1px grey;
+    box-shadow: 0 2px 4px 0 rgba(215,218,220,0.2);
     border-radius: 6px;
+}
+
+.sorting-picker.active {
+    display: flex;
+    flex-direction: column;
 }
 
 .sorting-item {
@@ -185,6 +189,24 @@
     margin: 0;
     border: 0;
     background: #1A1A1B;
-    border-radius: 6px;
+    text-align: start;
+}
 
+.sorting-item:hover {
+    background: #17232D;
+    cursor: pointer;
+}
+
+.sorting-item-btn:hover {
+    background: #17232D;
+    cursor: pointer;
+}
+
+.sorting-item-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #818384;
 }
