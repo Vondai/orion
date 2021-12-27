@@ -79,5 +79,13 @@ namespace OrionApi.Services.Posts
                     Title = x.Title,
                 })
                 .FirstOrDefault();
+
+        public string GetCommunityId(string postId)
+            => data.Posts.Where(p => p.Id == postId)
+                .Select(x => x.Community.Id)
+                .FirstOrDefault();
+
+        public bool IsValidById(string postId)
+            => data.Posts.Any(p => p.Id == postId);
     }
 }

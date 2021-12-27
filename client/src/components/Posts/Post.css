@@ -64,6 +64,36 @@
     margin-top: 15px;
 }
 
+.post-leave-comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.leave-comment-cta:disabled {
+    background: grey;
+    cursor: not-allowed;
+}
+
+.leave-comment-cta {
+    align-self: flex-end;
+    border-radius: 6px;
+    padding: 5px 7px;
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    border: thin solid grey;
+    background: #58b4f1dc;
+    color: white;
+}
+
+.leave-comment-cta:enabled:hover {
+    cursor: pointer;
+    background: white;
+    color: #58b4f1dc;
+
+}
+
 .post-comment-anonymous {
     border: thin solid grey;
     border-radius: 3px;
@@ -139,7 +169,7 @@
 
 .post-comments-sorting-wrapper {
     border-bottom: thin solid grey;
-    padding: 10px 0px;
+    padding-bottom: 10px;
     position: relative;
 }
 

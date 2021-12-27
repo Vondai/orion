@@ -2,32 +2,64 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import * as postService from "../../services/postService";
+import * as commentService from "../../services/commentService";
 import Footer from "../Footer/Footer";
 import PostCta from "./PostCta";
 import Comment from "../Comments/Comment";
 import "./Post.css";
 
 function Post() {
-  const { isAuthenticated } = useAuth();
-
+  const { isAuthenticated, token } = useAuth();
   const sortingPicker = useRef();
   const { communityName, postId } = useParams();
+  const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
+  const [comments, setComments] = useState([]);
   useEffect(() => {
     postService.getById(postId).then((data) => {
       setPost(data);
     });
   }, [postId]);
 
+  useEffect(() => {
+    commentService
+      .get(postId)
+      .then((commentsData) => {
+        setComments(commentsData);
+      })
+      .catch((err) => console.log(err));
+  }, [postId]);
+
+  function commentSubmitHandler(e) {
+    e.preventDefault();
+    const { comment } = Object.fromEntries(new FormData(e.currentTarget));
+    if (!comment) return;
+    commentService
+      .create(comment, postId, token)
+      .then((data) => console.log(data));
+  }
+  function sortingClickBtnHandler(e) {
+    sortingPicker.current.classList.toggle("active");
+  }
+
   const leaveCommentArea = (
     <section className="post-leave-comment-wrapper">
-      <label htmlFor="leave-comment">Leave a comment</label>
-      <textarea
-        id="leave-comment"
-        className="post-leave-comment"
-        rows="10"
-        cols="10"
-      ></textarea>
+      <form className="post-leave-comment-form" onSubmit={commentSubmitHandler}>
+        <label htmlFor="leave-comment">Leave a comment</label>
+        <textarea
+          id="leave-comment"
+          className="post-leave-comment"
+          rows="10"
+          cols="10"
+          name="comment"
+          onChange={(e) =>
+            e.target.value ? setLoading(false) : setLoading(true)
+          }
+        ></textarea>
+        <button className="leave-comment-cta" type="submit" disabled={loading}>
+          Comment
+        </button>
+      </form>
     </section>
   );
   const guestNavigation = (
@@ -52,9 +84,6 @@ function Post() {
       <p className="no-comments-info">Be the first to share what you think!</p>
     </div>
   );
-  function sortingClickBtnHandler() {
-    sortingPicker.current.classList.toggle('active');
-  }
   return (
     <main className="post">
       <section className="post-content">
@@ -91,6 +120,7 @@ function Post() {
               className="comments-sorting-btn"
               type="button"
               onClick={sortingClickBtnHandler}
+              onBlur={sortingClickBtnHandler}
             >
               <span className="comments-sorting-text">Sort by: Best</span>
             </button>
@@ -98,21 +128,23 @@ function Post() {
           </div>
           <div className="sorting-picker" ref={sortingPicker}>
             <Link to="?sort=best" className="sorting-item">
-              <button className='sorting-item-btn'>Best</button>
+              <button className="sorting-item-btn">Best</button>
             </Link>
             <Link to="?sort=top" className="sorting-item">
-              <button className='sorting-item-btn'>Top</button>
+              <button className="sorting-item-btn">Top</button>
             </Link>
             <Link to="?sort=new" className="sorting-item">
-              <button className='sorting-item-btn'>New</button>
+              <button className="sorting-item-btn">New</button>
             </Link>
             <Link to="?sort=old" className="sorting-item">
-              <button className='sorting-item-btn'>Old</button>
+              <button className="sorting-item-btn">Old</button>
             </Link>
           </div>
         </section>
         <section className="post-comments-wrapper">
-          {post.commentsCount === 0 ? noCommentsSection : <Comment />}
+          {post.commentsCount === 0
+            ? noCommentsSection
+            : comments.map((x) => <Comment key={x.id} comment={x} />)}
         </section>
       </section>
       <div className="side-wrapper">

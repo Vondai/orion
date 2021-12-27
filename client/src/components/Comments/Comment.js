@@ -1,20 +1,20 @@
 import "./Comment.css";
 
-function Comment () {
+function Comment ({ comment }) {
 
     return (
         <div className='comment'>
             <section className='comment-info-wrapper'>
                 <p className='comment-info-author'>
-                    SomeUsername
+                    {comment.author}
                 </p>
                 <p className='comment-info-time'>
-                    5hr. ago
+                    {comment.createdOn}
                 </p>
             </section>
             <section className='comment-content-wrapper'>
                 <p className='comment-content-text'>
-                    Lorem ipsum dolor amet.
+                    {comment.content}
                 </p>
             </section>
         </div>

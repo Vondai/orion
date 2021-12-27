@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using OrionApi.Data;
 using OrionApi.Data.Models;
+using OrionApi.Services.Comments;
 using OrionApi.Services.Communities;
 using OrionApi.Services.Posts;
 using OrionApi.Services.Users;
@@ -72,6 +73,7 @@ namespace OrionApi
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<ICommunityService, CommunityService>();
             services.AddTransient<IPostService, PostService>();
+            services.AddTransient<ICommentService, CommentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

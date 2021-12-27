@@ -21,11 +21,14 @@ function AuthProvider({ children }) {
 
     let isAuthenticated = Boolean(currentUser.username);
 
+    let token = currentUser.token;
+
     const value = {
         currentUser,
         signIn,
         signOut,
-        isAuthenticated
+        isAuthenticated,
+        token,
     };
 
     return (
