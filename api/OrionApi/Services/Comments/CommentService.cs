@@ -15,7 +15,7 @@ namespace OrionApi.Services.Comments
 
         public CommentService(OrionDbContext data) => this.data = data;
 
-        public async Task<string> Create(string content, string postId, string communityId, string userId)
+        public async Task<CommentModel> Create(string content, string postId, string communityId, string userId)
         {
             var comment = new Comment
             {
@@ -28,7 +28,9 @@ namespace OrionApi.Services.Comments
             data.Comments.Add(comment);
             await data.SaveChangesAsync();
 
-            return comment.Id;
+            var commentModel = GetById(comment.Id);
+
+            return commentModel;
         }
 
         public ICollection<CommentModel> Get(string postId)
@@ -43,5 +45,16 @@ namespace OrionApi.Services.Comments
                 Content = x.Content,
             })
             .ToList();
+
+        public CommentModel GetById(string commentId)
+            => data.Comments.Where(c => c.Id == commentId)
+            .Select(x => new CommentModel
+            {
+                Id = x.Id,
+                Author = x.Author.UserName,
+                Content = x.Content,
+                CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
+            })
+            .FirstOrDefault();
     }
 }

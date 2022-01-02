@@ -50,12 +50,9 @@ namespace OrionApi.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, response);
             }
             var communityId = postService.GetCommunityId(model.PostId);
-            var commentId = await commentService.Create(model.Comment, model.PostId, communityId, userId);
+            var commentModel = await commentService.Create(model.Comment, model.PostId, communityId, userId);
 
-            response.Status = "Success";
-            response.Message = commentId;
-
-            return StatusCode(StatusCodes.Status201Created, response);
+            return StatusCode(StatusCodes.Status201Created, commentModel);
         }
 
         [AllowAnonymous]

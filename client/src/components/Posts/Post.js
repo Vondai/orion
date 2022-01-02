@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import * as postService from "../../services/postService";
 import * as commentService from "../../services/commentService";
+import NotificationModal from "../Notifications/NotficationModal";
 import Footer from "../Footer/Footer";
 import PostCta from "./PostCta";
 import Comment from "../Comments/Comment";
@@ -13,13 +14,14 @@ function Post() {
   const sortingPicker = useRef();
   const { communityName, postId } = useParams();
   const [loading, setLoading] = useState(true);
+  const [notificationMessage, setNotificationMessage] = useState('');
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   useEffect(() => {
     postService.getById(postId).then((data) => {
       setPost(data);
     });
-  }, [postId]);
+  }, [postId, comments]);
 
   useEffect(() => {
     commentService
@@ -34,9 +36,13 @@ function Post() {
     e.preventDefault();
     const { comment } = Object.fromEntries(new FormData(e.currentTarget));
     if (!comment) return;
-    commentService
-      .create(comment, postId, token)
-      .then((data) => console.log(data));
+    setLoading(true);
+    commentService.create(comment, postId, token).then((data) => {
+      setComments((oldComments) => [data, ...oldComments]);
+      setLoading(false);
+      setNotificationMessage('Successfully added a comment.');
+    });
+    e.currentTarget.reset();
   }
   function sortingClickBtnHandler(e) {
     sortingPicker.current.classList.toggle("active");
@@ -108,6 +114,7 @@ function Post() {
         <article className="post-content-wrapper">
           <p className="post-content-text">{post.description}</p>
         </article>
+        <NotificationModal message={notificationMessage} />
         <PostCta
           commentsCount={post.commentsCount}
           postId={post.id}
