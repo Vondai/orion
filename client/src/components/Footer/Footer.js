@@ -23,7 +23,7 @@ function Footer () {
                     </ul>
                 </section>
                 <section className='rights-wrapper'>
-                <p className='rights'>Orion &copy; 2021. All rights reserved</p>
+                <p className='rights'>Orion &copy; 2022. All rights reserved</p>
                 </section>
             </footer>
     );

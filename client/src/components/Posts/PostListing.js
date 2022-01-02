@@ -15,11 +15,11 @@ function PostListing({ post }) {
     </div>
   );
 
-  function postClickHandler (e) {
-    if (e.target.tagName === 'A') return
-    post.communityName ?
-    navigate(`/community/${post.communityName}/comments/${post.id}`) : 
-    navigate(`comments/${post.id}`)
+  function postClickHandler(e) {
+    if (e.target.tagName === "A") return;
+    post.communityName
+      ? navigate(`/community/${post.communityName}/comments/${post.id}`)
+      : navigate(`comments/${post.id}`);
   }
 
   return (
@@ -48,10 +48,10 @@ function PostListing({ post }) {
           </div>
         </section>
         <PostCta
-            commentsCount={post.commentsCount}
-            postId={post.id}
-            communityName={post.communityName}
-         />
+          commentsCount={post.commentsCount}
+          postId={post.id}
+          communityName={post.communityName}
+        />
       </article>
     </section>
   );

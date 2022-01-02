@@ -4,6 +4,7 @@ import PostListing from "../Posts/PostListing";
 import TopCommunities from "../Communities/TopCommunities";
 import * as postService from "../../services/postService";
 import Footer from "../Footer/Footer";
+import PostListingSkeleton from "../skeletons/PostListingSkeleton";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -24,9 +25,16 @@ function Home() {
       <main className="site-content-wrapper">
         <div className="main-content">
           <PostsListingNavigation />
-          {posts.map((post) => (
-            <PostListing key={post.id} post={post} />
-          ))}
+          {posts.length > 0 ? (
+            posts.map((post) => <PostListing key={post.id} post={post} />)
+          ) : (
+            <>
+            <PostListingSkeleton />
+            <PostListingSkeleton />
+            <PostListingSkeleton />
+            <PostListingSkeleton />
+            </>
+          )}
         </div>
 
         <div>
