@@ -1,9 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useAuth } from "../../contexts/AuthContext";
+import { NotificationContext } from "../Notifications/NotificationProvider";
 import * as postService from "../../services/postService";
 import * as commentService from "../../services/commentService";
-import NotificationModal from "../Notifications/NotficationModal";
 import Footer from "../Footer/Footer";
 import PostCta from "./PostCta";
 import Comment from "../Comments/Comment";
@@ -12,9 +12,9 @@ import "./Post.css";
 function Post() {
   const { isAuthenticated, token } = useAuth();
   const sortingPicker = useRef();
+  const dispatch = useContext(NotificationContext);
   const { communityName, postId } = useParams();
   const [loading, setLoading] = useState(true);
-  const [notificationMessage, setNotificationMessage] = useState('');
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   useEffect(() => {
@@ -40,7 +40,22 @@ function Post() {
     commentService.create(comment, postId, token).then((data) => {
       setComments((oldComments) => [data, ...oldComments]);
       setLoading(false);
-      setNotificationMessage('Successfully added a comment.');
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          type: "SUCCESS",
+          message: "Successfully added your comment.",
+        },
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          type: "ERROR",
+          message: "Couldn't post your comment.",
+        },
+      });
     });
     e.currentTarget.reset();
   }
@@ -114,7 +129,6 @@ function Post() {
         <article className="post-content-wrapper">
           <p className="post-content-text">{post.description}</p>
         </article>
-        <NotificationModal message={notificationMessage} />
         <PostCta
           commentsCount={post.commentsCount}
           postId={post.id}

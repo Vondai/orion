@@ -12,6 +12,7 @@ export const create = (title, content, community, token) => {
     .then(res => res.json())
     .catch(error => {
         console.log(error);
+        throw error;
     });
 }
 

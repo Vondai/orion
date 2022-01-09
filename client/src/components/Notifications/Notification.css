@@ -1,0 +1,69 @@
+.notification-wrapper {
+    position: fixed;
+    width: 300px;
+    top: 5rem;
+    right: 2rem;
+    text-align: center;
+    border-radius: 1rem;
+    background-color: #C8CBCD;
+    overflow: hidden;
+    animation: wrapperShow .7s forwards;
+    z-index: 1000;
+}
+
+@keyframes wrapperShow {
+    0% {
+        right: -20rem;
+    }
+    100% {
+        right: 2rem;
+    }
+}
+
+.notification {
+    padding: .5rem 1rem;
+    width: 100%;
+    animation: slideShow 1s forwards;
+}
+
+@keyframes slideShow {
+    0% {
+        margin-left: 120%;
+    }
+    100% {
+        margin-left: 0%;
+    }
+}
+
+.notification-wrapper.hide {
+    animation: slideHide .7s forwards;
+}
+
+@keyframes slideHide {
+    0% {
+        right: 2rem;
+    }
+    100% {
+        right: -20rem;
+    }
+}
+
+.notification-content {
+    color: #1A1A2B;
+    line-height: 1;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.bar {
+    width: 100%;
+    height: 10px;
+}
+
+.bar.success {
+    background-color: #58b4f1dc;
+}
+
+.bar.error {
+    background-color: red;
+}

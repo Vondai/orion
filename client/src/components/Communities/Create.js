@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import ErrorBox from '../Notifications/ErrorBox';
 import './Create.css';
 import * as communityService from '../../services/communityService';
+import { NotificationContext } from '../Notifications/NotificationProvider';
 
 
 function Create() {
@@ -12,9 +13,10 @@ function Create() {
     const [error, setError] = useState();
     const [loading, setLoading] = useState();
     const { currentUser } = useAuth();
+    const dispatch = useContext(NotificationContext);
     const regex = /^[a-zA-Z0-9]+$/;
 
-    async function submitFormHandler(e) {
+    function submitFormHandler(e) {
         e.preventDefault();
         setError('');
         let { title, description } = Object.fromEntries(new FormData(e.currentTarget));
@@ -30,15 +32,30 @@ function Create() {
 
         try {
             setLoading(true)
-            let result = await communityService.create(title, description, currentUser.token);
-            if (result?.status === 'Error') {
-                setError(result.message);
-                setLoading(false);
-            } else {
-                navigate(`/community/${title}`);
-            }
+            communityService.create(title, description, currentUser.token)
+            .then(result => {
+                if (result?.status === 'Error') {
+                    setError(result.message);
+                    setLoading(false);
+                } else {
+                    dispatch({
+                        type: "ADD_NOTIFICATION",
+                        payload: {
+                            type: "SUCCESS",
+                            message: "Your community has been created successfully."
+                        }
+                    })
+                    navigate(`/community/${title}`);
+                }
+            });
         } catch(error) {
-            console.log(error);
+            dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                    type: "ERROR",
+                    message: "Could't create community."
+                }
+            })
             setLoading(false);
         }
     }

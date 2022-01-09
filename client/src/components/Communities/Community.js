@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AboutCommunity from "./AboutCommunity";
 import PostsListingNavigation from "../Posts/PostsListingNavigation";
 import PostListing from "../Posts/PostListing";
 import Footer from "../Footer/Footer";
 import PageNotFound from "../PageNotFound";
-import NotificationModal from "../Notifications/NotficationModal";
 import { useAuth } from "../../contexts/AuthContext";
 import CreateModal from "../Posts/CreateModal";
+import { NotificationContext } from "../Notifications/NotificationProvider";
 import * as communityService from "../../services/communityService";
 import * as postService from "../../services/postService";
 import "./Community.css";
@@ -16,10 +16,10 @@ function Community() {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated } = useAuth();
   const { communityName } = useParams();
+  const dispatch = useContext(NotificationContext);
   const [communityDetails, setCommunityDetails] = useState({});
   const [posts, setPosts] = useState([]);
   const [errorPage, setErrorPage] = useState(false);
-	const [notificationMessage, setNotificationMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [postError, setPostError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -61,18 +61,31 @@ function Community() {
     if (title.length < 5) {
       return setPostError("Title must be atleast five characters.");
     }
-    if (content.length < 10) {
-      return setPostError("Content must be atleast ten characters.");
+    if (content.length < 5) {
+      return setPostError("Content must be atleast five characters.");
     }
     setLoading(true);
     postService
       .create(title, content, communityName, token)
       .then((data) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            type: "SUCCESS",
+            message: "Post successfully published."
+          }
+        })
         navigate(`/community/${communityName}/comments/${data.message}`);
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err);
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            type: "ERROR",
+            message: "Couldn't publish post."
+          }
+        })
       });
   }
 
@@ -88,18 +101,28 @@ function Community() {
           userIsMember: true,
 					members: oldDetails.members + 1,
         }));
-				setNotificationMessage(data.message);
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            type: "SUCCESS",
+            message: "Successfully joined community."
+          }
+        });
       })
-      .catch((err) => {
-				setNotificationMessage(err.message);
+      .catch(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            type: "ERROR",
+            message: "Unexpected error. Try again later."
+          }
+        });
 			});
   }
 
   if (errorPage) return <PageNotFound />;
 
   return (
-    <>
-			<NotificationModal message={notificationMessage}/>
       <main className="site-content-wrapper">
         <div className="main-content">
           <PostsListingNavigation />
@@ -126,7 +149,6 @@ function Community() {
           loading={loading}
         ></CreateModal>
       </main>
-    </>
   );
 }
 
