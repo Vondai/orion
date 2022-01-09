@@ -9,7 +9,6 @@ function CreateModal({
         loading }) {
 
     if (!open) return null;
-
     return (
         <>
         <div className='overlay'></div>

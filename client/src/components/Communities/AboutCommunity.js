@@ -39,7 +39,7 @@ function AboutCommunity({
         className="community-cta create-post-cta"
         onClick={createPostHandler}
       >
-        Create a post
+        Publish
       </button>
     </div>
   );

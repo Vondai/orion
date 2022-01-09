@@ -25,6 +25,16 @@
     border: thin solid grey;
     border-radius: 3px;
     padding: 10px;
+    animation: show-dropdown 0.5s;
+  }
+
+  @keyframes show-dropdown {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
 .profile-dropdown-content a {

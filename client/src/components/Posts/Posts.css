@@ -43,10 +43,12 @@
     align-items: center;
     padding: 10px 10px 0px 10px;
     border-bottom: thin solid grey;
+    transition: background-color .5s;
 }
 
-.post-listing:hover {
-    border: 1px solid grey;
+.post-listing:hover,
+.post-listing:focus {
+    background-color: rgb(136, 66, 216);
     cursor: pointer;
 }
 

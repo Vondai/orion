@@ -37,6 +37,15 @@
     margin: 4px 0;
 }
 
+.community-cta-section div button {
+    transition: transform .5s;
+}
+
+.community-cta-section div button:hover,
+.community-cta-section div button:focus {
+    transform: scale(1.1);
+}
+
 .community-cta {
     padding: 8px 25px;
     font-size: 15px;
