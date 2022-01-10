@@ -48,7 +48,7 @@
 
 .post-listing:hover,
 .post-listing:focus {
-    background-color: rgb(136, 66, 216);
+    background-color: #F2975A;
     cursor: pointer;
 }
 

@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState, useRef, useContext } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { NotificationContext } from "../Notifications/NotificationProvider";
+import useClickOutside from "../../hooks/useClickOutside";
 import * as postService from "../../services/postService";
 import * as commentService from "../../services/commentService";
 import Footer from "../Footer/Footer";
@@ -11,12 +12,15 @@ import "./Post.css";
 
 function Post() {
   const { isAuthenticated, token } = useAuth();
-  const sortingPicker = useRef();
+  const sortingPickerRef = useRef();
   const dispatch = useContext(NotificationContext);
   const { communityName, postId } = useParams();
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
+  const [openCommentSortingPicker, setOpenCommentSortingPicker] =
+    useState(false);
+
   useEffect(() => {
     postService.getById(postId).then((data) => {
       setPost(data);
@@ -62,9 +66,12 @@ function Post() {
         setLoading(false);
       });
   }
-  function sortingClickBtnHandler(e) {
-    sortingPicker.current.classList.toggle("active");
+  function sortingClickBtnHandler() {
+    setOpenCommentSortingPicker((prev) => !prev);
   }
+  useClickOutside(sortingPickerRef, () => {
+    if (openCommentSortingPicker) setOpenCommentSortingPicker(false);
+  })
 
   const leaveCommentArea = (
     <section className="post-leave-comment-wrapper">
@@ -144,13 +151,15 @@ function Post() {
               className="comments-sorting-btn"
               type="button"
               onClick={sortingClickBtnHandler}
-              onBlur={sortingClickBtnHandler}
             >
               <span className="comments-sorting-text">Sort by: Best</span>
             </button>
             <i className="fas fa-sort-down"></i>
           </div>
-          <div className="sorting-picker" ref={sortingPicker}>
+          <div
+            className={`sorting-picker ${openCommentSortingPicker ? "active" : ""}`}
+            ref={sortingPickerRef}
+          >
             <Link to="?sort=best" className="sorting-item">
               <button className="sorting-item-btn">Best</button>
             </Link>
