@@ -33,31 +33,34 @@ function Post() {
   }, [postId]);
 
   function commentSubmitHandler(e) {
+    const form = e.currentTarget;
     e.preventDefault();
     const { comment } = Object.fromEntries(new FormData(e.currentTarget));
     if (!comment) return;
     setLoading(true);
-    commentService.create(comment, postId, token).then((data) => {
-      setComments((oldComments) => [data, ...oldComments]);
-      setLoading(false);
-      dispatch({
-        type: "ADD_NOTIFICATION",
-        payload: {
-          type: "SUCCESS",
-          message: "Successfully added your comment.",
-        },
+    commentService
+      .create(comment, postId, token)
+      .then((data) => {
+        setComments((oldComments) => [data, ...oldComments]);
+        form.reset();
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            type: "SUCCESS",
+            message: "Successfully added your comment.",
+          },
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            type: "ERROR",
+            message: "Couldn't post your comment.",
+          },
+        });
+        setLoading(false);
       });
-    })
-    .catch(() => {
-      dispatch({
-        type: "ADD_NOTIFICATION",
-        payload: {
-          type: "ERROR",
-          message: "Couldn't post your comment.",
-        },
-      });
-    });
-    e.currentTarget.reset();
   }
   function sortingClickBtnHandler(e) {
     sortingPicker.current.classList.toggle("active");
