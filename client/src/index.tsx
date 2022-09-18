@@ -5,6 +5,7 @@ import App from './App';
 import NotificatioProvider from './components/Notifications/NotificationProvider';
 import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import './index.css';
 
 const queryClient = new QueryClient();
 

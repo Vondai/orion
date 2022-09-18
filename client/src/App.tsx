@@ -10,7 +10,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import Community from './components/Communities/Community';
-import './App.css';
 
 function App() {
   return (
