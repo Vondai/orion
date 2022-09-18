@@ -5,7 +5,6 @@
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-  background: blue;
 }
 
 *,
@@ -16,4 +15,8 @@ body {
 
 #root {
   position: relative;
+}
+
+.btn-nav-cta {
+  @apply btn bg-base-100 text-accent rounded-lg px-6 hover:bg-accent-focus hover:text-primary-content;
 }

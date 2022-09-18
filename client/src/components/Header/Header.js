@@ -1,31 +1,64 @@
 import { Link } from 'react-router-dom';
-import "./Header.css";
 import { useAuth } from '../../contexts/AuthContext';
-import SignedInNavigation from './SignedInNavigation'
+import SignedInNavigation from './SignedInNavigation';
 
-function Header () {
+function Header() {
+  const { currentUser, isAuthenticated } = useAuth();
 
-    const { currentUser, isAuthenticated } = useAuth();
-
-    return (
-        <header className="site-header">
-            <section className="site-logo">
-                <Link to='/'>
-                    Orion
-                </Link>
-            </section>
-            <nav className="nav-bar">
-                {
-                    isAuthenticated
-                    ? <SignedInNavigation username={currentUser.username} /> 
-                    :<>
-                        <Link className="cta-login" to="/login">Log in</Link>
-                        <Link className="cta-signup" to="/signup">Sign Up</Link>
-                    </>
-                }
-            </nav>
-        </header>
-    )
-};
+  return (
+    <header className='bg-primary-focus navbar justify-between px-3'>
+      <section className='text-3xl font-bold cursor-pointer hover:underline underline-offset-8'>
+        <Link to='/'>
+          <p>Orion</p>
+        </Link>
+      </section>
+      <div className='form-control'>
+        <div className='input-group'>
+          <input
+            type='text'
+            placeholder='Search…'
+            className='input input-bordered'
+          />
+          <button className='btn btn-square btn-accent btn-disabled'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <nav className='flex gap-4'>
+        {isAuthenticated ? (
+          <SignedInNavigation username={currentUser.username} />
+        ) : (
+          <>
+            <Link
+              className='btn-nav-cta'
+              to='/login'
+            >
+              Sign in
+            </Link>
+            <Link
+              className='btn-nav-cta'
+              to='/signup'
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
+      </nav>
+    </header>
+  );
+}
 
 export default Header;
