@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OrionApi.Data;
 using OrionApi.Data.Models;
 using OrionApi.Models.Communities;
+using OrionApi.Models.Post;
 
 namespace OrionApi.Services.Communities
 {
@@ -54,17 +55,30 @@ namespace OrionApi.Services.Communities
                 })
                 .ToList();
 
-        public CommunityModel GetDetails(string name, string userId = null)
+        public GetCommunityModel Get(string name, string userId = null)
             => data.Communities
                 .Where(c => c.Name == name)
-                .Select(x => new CommunityModel
+                .Select(x => new GetCommunityModel
                 {
                     Name = x.Name,
                     CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
                     Description = x.Description,
                     Members = x.Members.Count,
                     UserIsCreator = x.CreatorId == userId,
-                    UserIsMember = x.Members.Any(m => m.Id == userId)
+                    UserIsMember = x.Members.Any(m => m.Id == userId),
+                    Posts = x.Posts
+                    .OrderByDescending(p => p.CreatedOn)
+                    .ThenBy(p => p.Title)
+                    .Select(p => new PostListingModel
+                    {
+                        Id = p.Id,
+                        AuthorName = p.Author.UserName,
+                        CommentsCount = p.Comments.Count,
+                        CommunityName = x.Name,
+                        Title = p.Title,
+                        CreatedOn = p.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US"))
+                    }).ToList()
+
                 })
             .FirstOrDefault();
 

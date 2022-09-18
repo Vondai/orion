@@ -12,11 +12,11 @@ namespace OrionApi.Controllers
 {
     [Route("orion.api/[controller]")]
     [ApiController]
-    public class CommunityController : ControllerBase
+    public class CommunitiesController : ControllerBase
     {
         private readonly ICommunityService communityService;
 
-        public CommunityController(ICommunityService communityService)
+        public CommunitiesController(ICommunityService communityService)
         {
             this.communityService = communityService;
         }
@@ -54,38 +54,36 @@ namespace OrionApi.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("{name}")]
-        public IActionResult GetDetails(string name)
+        [Route("{communityName}")]
+        public IActionResult Get(string communityName)
         {
             var userId = this.User.Id();
-            var communityDetails = communityService.GetDetails(name, userId);
-            if (communityDetails == null)
+            var community = communityService.Get(communityName, userId);
+            if (community == null)
             {
-                return NotFound(new Response { Status = "Not Found", Message = "Community does not exist." });
+                return NotFound();
             }
 
-            return Ok(communityDetails);
+            return Ok(community);
         }
 
         [Authorize]
         [HttpPost]
-        [Route("join")]
-        public async Task<IActionResult> Join([FromBody] string communityName)
+        public async Task<IActionResult> Manage([FromBody] ManageCommunityRequestBody requestBody)
         {
             var userId = this.User.Id();
-            var response = new Response();
             try
             {
-                var result = await communityService.Join(communityName, userId);
-                response.Status = "Success";
-                response.Message = result;
-                return Ok(response);
+                string result = "";
+                if (requestBody.Action == "join")
+                {
+                    result = await communityService.Join(requestBody.CommunityName, userId);
+                }
+                return Ok(new ResponseMessage(result));
             }
             catch (InvalidOperationException e)
             {
-                response.Status = "Error";
-                response.Message = e.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
+                return StatusCode(StatusCodes.Status400BadRequest, new ResponseMessage(e.Message));
             }
         }
     }

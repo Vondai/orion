@@ -3,8 +3,12 @@ using OrionApi.Models.Post;
 
 namespace OrionApi.Models.Communities
 {
-    public class CommunityModel
+    public class GetCommunityModel
     {
+        public GetCommunityModel()
+        {
+            Posts = new List<PostListingModel>();
+        }
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -16,5 +20,7 @@ namespace OrionApi.Models.Communities
         public bool UserIsMember { get; set; }
 
         public bool UserIsCreator { get; set; }
+
+        public ICollection<PostListingModel> Posts { get; set; }
     }
 }
