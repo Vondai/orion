@@ -20,3 +20,7 @@ body {
 .btn-nav-cta {
   @apply btn bg-base-100 text-accent rounded-lg px-6 hover:bg-accent-focus hover:text-primary-content;
 }
+
+.btn-post-filter {
+  @apply btn bg-secondary px-5 py-2 flex gap-2 items-center rounded-xl text-xl;
+}

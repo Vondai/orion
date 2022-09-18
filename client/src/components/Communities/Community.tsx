@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AboutCommunity from './AboutCommunity';
-import PostsListingNavigation from '../Posts/PostsListingNavigation';
+import PostsListingFilterButtons from '../Posts/PostsListingFilterButtons';
 import PostListing from '../Posts/PostListing';
 import Footer from '../Footer/Footer';
 import PageNotFound from '../PageNotFound';
@@ -134,7 +134,7 @@ const Community = () => {
   return (
     <main className='site-content-wrapper'>
       <div className='main-content'>
-        <PostsListingNavigation />
+        <PostsListingFilterButtons />
         <section className='post-content-wrapper'>
           {community.posts.map((post: TPost) => (
             <PostListing

@@ -8,7 +8,6 @@ import * as commentService from '../../services/commentService';
 import Footer from '../Footer/Footer';
 import PostCta from './PostCta';
 import Comment from '../Comments/Comment';
-import './Post.css';
 
 function Post() {
   const { isAuthenticated, token } = useAuth();

@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import PostsListingNavigation from "../Posts/PostsListingNavigation";
-import PostListing from "../Posts/PostListing";
-import TopCommunities from "../Communities/TopCommunities";
-import * as postService from "../../services/postService";
-import Footer from "../Footer/Footer";
-import PostListingSkeleton from "../skeletons/PostListingSkeleton";
+import { useEffect, useState } from 'react';
+import PostsListingFilterButtons from '../Posts/PostsListingFilterButtons';
+import PostListing from '../Posts/PostListing';
+import TopCommunities from '../Communities/TopCommunities';
+import * as postService from '../../services/postService';
+import PostListingSkeleton from '../skeletons/PostListingSkeleton';
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -22,26 +21,31 @@ function Home() {
 
   return (
     <>
-      <main className="site-content-wrapper">
-        <div className="main-content">
-          <PostsListingNavigation />
+      <div className='flex justify-between gap-28 items-start'>
+        <div className='w-3/4'>
+          <div className='bg-base-200 py-5 mb-3 rounded-lg'>
+            <PostsListingFilterButtons />
+          </div>
           {posts.length > 0 ? (
-            posts.map((post) => <PostListing key={post.id} post={post} />)
+            posts.map((post) => (
+              <PostListing
+                key={post.id}
+                post={post}
+              />
+            ))
           ) : (
             <>
-            <PostListingSkeleton />
-            <PostListingSkeleton />
-            <PostListingSkeleton />
-            <PostListingSkeleton />
+              <PostListingSkeleton />
+              <PostListingSkeleton />
+              <PostListingSkeleton />
+              <PostListingSkeleton />
             </>
           )}
         </div>
-
-        <div>
+        <div className='w-1/3'>
           <TopCommunities />
-          <Footer />
         </div>
-      </main>
+      </div>
     </>
   );
 }
