@@ -9,13 +9,7 @@ const GuestNavigation: FC = () => {
         className='btn-auth-cta'
         onClick={() => setAuthModalOpen(true)}
       >
-        Sign in
-      </button>
-      <button
-        className='btn-auth-cta'
-        onClick={() => setAuthModalOpen(false)}
-      >
-        Sign Up
+        Sign in / Sign up
       </button>
       <AuthModal
         isAuthModalOpen={isAuthModalOpen}

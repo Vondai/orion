@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import FocusTrap from 'focus-trap-react';
 import { useClickAway } from 'react-use';
 
@@ -6,6 +6,7 @@ const AuthModal: FC<{
   isAuthModalOpen: boolean;
   setAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ isAuthModalOpen, setAuthModalOpen }) => {
+  const [showSignupForm, setShowSignupForm] = useState(false);
   const modalRef = useRef<HTMLElement>(null);
 
   const handleAuthModalClose = (e: any) => {
@@ -14,6 +15,11 @@ const AuthModal: FC<{
     setAuthModalOpen(false);
     document.body.classList.remove('body-overflow');
   };
+
+  const handleAuthFormChange = () => {
+    setShowSignupForm(!showSignupForm);
+  };
+
   useClickAway(modalRef, handleAuthModalClose);
   if (!isAuthModalOpen) return null;
   if (isAuthModalOpen) document.body.classList.add('body-overflow');
@@ -67,25 +73,48 @@ const AuthModal: FC<{
                   className='input input-bordered'
                 />
               </label>
-              <label className='label'>
-                <span className='label-text'>Repeat Password</span>
-              </label>
-              <label className='input-group'>
-                <span className='w-28 leading-5'>Repeat Password</span>
-                <input
-                  type='password'
-                  placeholder='xxxxxx'
-                  className='input input-bordered'
-                />
-              </label>
-              <button className='btn-auth-cta mt-4'>Sign in</button>
+              {showSignupForm && (
+                <>
+                  <label className='label'>
+                    <span className='label-text'>Repeat Password</span>
+                  </label>
+                  <label className='input-group'>
+                    <span className='w-28 leading-5'>Repeat Password</span>
+                    <input
+                      type='password'
+                      placeholder='xxxxxx'
+                      className='input input-bordered'
+                    />
+                  </label>
+                </>
+              )}
+              {showSignupForm ? (
+                <button className='btn-auth-cta mt-4'>Sign up</button>
+              ) : (
+                <button className='btn-auth-cta mt-4'>Sign in</button>
+              )}
             </form>
-            <span>
-              New to Orion? <span>Sign Up</span>
-            </span>
-            <span>
-              Already a member? <span>Sign In</span>
-            </span>
+            {showSignupForm ? (
+              <span>
+                Already a member?{' '}
+                <span
+                  className='font-bold underline cursor-pointer hover:text-accent'
+                  onClick={handleAuthFormChange}
+                >
+                  Sign In
+                </span>
+              </span>
+            ) : (
+              <span>
+                New to Orion?{' '}
+                <span
+                  className='font-bold underline cursor-pointer hover:text-accent'
+                  onClick={handleAuthFormChange}
+                >
+                  Sign Up
+                </span>
+              </span>
+            )}
           </div>
         </section>
       </FocusTrap>
