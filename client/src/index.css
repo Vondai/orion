@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
+  z-index: 1;
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -21,10 +22,14 @@ body {
   @apply overflow-hidden;
 }
 
-.btn-nav-cta {
+.btn-auth-cta {
   @apply btn bg-base-100 text-accent rounded-lg px-6 hover:bg-accent-focus hover:text-primary-content;
 }
 
 .btn-post-filter {
   @apply btn bg-secondary px-5 py-2 flex gap-2 items-center rounded-xl text-xl;
+}
+
+.primary-opacity-1 {
+  background: rgba(80, 20, 184, 1);
 }

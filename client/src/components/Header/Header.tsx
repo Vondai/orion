@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import GuestNavigation from './GuestNavigation';
 import SignedInNavigation from './SignedInNavigation';
 
 function Header() {
@@ -41,20 +42,7 @@ function Header() {
         {isAuthenticated ? (
           <SignedInNavigation username={currentUser.username} />
         ) : (
-          <>
-            <Link
-              className='btn-nav-cta'
-              to='/login'
-            >
-              Sign in
-            </Link>
-            <Link
-              className='btn-nav-cta'
-              to='/signup'
-            >
-              Sign Up
-            </Link>
-          </>
+          <GuestNavigation />
         )}
       </nav>
     </header>
