@@ -17,6 +17,10 @@ body {
   position: relative;
 }
 
+.body-overflow {
+  @apply overflow-hidden;
+}
+
 .btn-nav-cta {
   @apply btn bg-base-100 text-accent rounded-lg px-6 hover:bg-accent-focus hover:text-primary-content;
 }
