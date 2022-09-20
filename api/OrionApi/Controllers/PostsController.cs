@@ -12,15 +12,23 @@ namespace OrionApi.Controllers
 {
     [Route("orion.api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostsController : ControllerBase
     {
         private readonly ICommunityService communityService;
         private readonly IPostService postService;
 
-        public PostController(IPostService postService, ICommunityService communityService)
+        public PostsController(IPostService postService, ICommunityService communityService)
         {
             this.postService = postService;
             this.communityService = communityService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult FetchTrending()
+        {
+            var posts = postService.GetAll();
+            return Ok(posts);
         }
 
         [HttpPost]
@@ -39,15 +47,6 @@ namespace OrionApi.Controllers
 
             var response = new Response { Status = "Success", Message = postId };
             return StatusCode(StatusCodes.Status201Created, response);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        [Route("all")]
-        public IActionResult GetAll()
-        {
-            var posts = postService.GetAll();
-            return Ok(posts);
         }
 
         [HttpGet]

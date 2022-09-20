@@ -15,14 +15,15 @@ import {
   manageCommunity
 } from '../../services/communityService';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { TPost } from '../../types/TPost';
 
-type TPost = {
-  id: string;
-  title: string;
-  authorName: string;
-  commentsCount: number;
-  createdOn: string;
-};
+// type TPost = {
+//   id: string;
+//   title: string;
+//   authorName: string;
+//   commentsCount: number;
+//   createdOn: string;
+// };
 // type TCommunity = {
 //   name: string;
 //   members: number;
@@ -60,43 +61,43 @@ const Community = () => {
     setIsOpen(true);
   }
 
-  function createPostSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const { title, content } = Object.fromEntries(
-      new FormData(e.currentTarget)
-    );
-    console.log(title);
+  // function createPostSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   const { title, content } = Object.fromEntries(
+  //     new FormData(e.currentTarget)
+  //   );
+  //   console.log(title);
 
-    // if (title.length < 5) {
-    //   return setPostError('Title must be atleast five characters.');
-    // }
-    // if (content.length < 5) {
-    //   return setPostError('Content must be atleast five characters.');
-    // }
-    setLoading(true);
-    postService
-      .create(title, content, communityName, token)
-      .then((data) => {
-        dispatch({
-          type: 'ADD_NOTIFICATION',
-          payload: {
-            type: 'SUCCESS',
-            message: 'Post successfully published.'
-          }
-        });
-        navigate(`/community/${communityName}/comments/${data.message}`);
-      })
-      .catch((err) => {
-        setLoading(false);
-        dispatch({
-          type: 'ADD_NOTIFICATION',
-          payload: {
-            type: 'ERROR',
-            message: "Couldn't publish post."
-          }
-        });
-      });
-  }
+  //   // if (title.length < 5) {
+  //   //   return setPostError('Title must be atleast five characters.');
+  //   // }
+  //   // if (content.length < 5) {
+  //   //   return setPostError('Content must be atleast five characters.');
+  //   // }
+  //   setLoading(true);
+  //   postService
+  //     .create(title, content, communityName, token)
+  //     .then((data) => {
+  //       dispatch({
+  //         type: 'ADD_NOTIFICATION',
+  //         payload: {
+  //           type: 'SUCCESS',
+  //           message: 'Post successfully published.'
+  //         }
+  //       });
+  //       navigate(`/community/${communityName}/comments/${data.message}`);
+  //     })
+  //     .catch((err) => {
+  //       setLoading(false);
+  //       dispatch({
+  //         type: 'ADD_NOTIFICATION',
+  //         payload: {
+  //           type: 'ERROR',
+  //           message: "Couldn't publish post."
+  //         }
+  //       });
+  //     });
+  // }
 
   const handleJoinCtaClick = async () => {
     if (!isAuthenticated) return navigate('/login');
@@ -153,13 +154,13 @@ const Community = () => {
         />
         <Footer />
       </div>
-      <CreateModal
+      {/* <CreateModal
         open={isOpen}
         onClose={() => setIsOpen(false)}
         createPostSubmitHandler={createPostSubmitHandler}
         postError={postError}
         loading={loading}
-      ></CreateModal>
+      ></CreateModal> */}
     </main>
   );
 };
