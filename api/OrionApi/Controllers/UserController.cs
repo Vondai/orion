@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using OrionApi.Models;
 using OrionApi.Models.User;
 using OrionApi.Services.Users;
+using OrionApi.Models;
 
 namespace OrionApi.Controllers
 {
@@ -43,7 +44,7 @@ namespace OrionApi.Controllers
 
             if (token == null)
             {
-                return NotFound(new Response { Status = "Error", Message = "Invalid username or password." });
+                return BadRequest(new ResponseMessage("Invalid username or password."));
             }
             return Ok(new { model.Username, token });
         }

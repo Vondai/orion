@@ -8,8 +8,8 @@ interface ICurrentUser {
 
 interface IAuthState {
   currentUser: ICurrentUser;
-  signIn?: (userData: ICurrentUser) => void;
-  signOut?: () => void;
+  persistUserData?: (userData: ICurrentUser) => void;
+  clearUserData?: () => void;
   isAuthenticated: boolean;
 }
 
@@ -24,11 +24,11 @@ function AuthProvider({ children }: any) {
     'currentUser',
     initialAuthState.currentUser
   );
-  function signIn(userData: ICurrentUser) {
+  function persistUserData(userData: ICurrentUser) {
     setCurrentUser(userData);
   }
 
-  function signOut() {
+  function clearUserData() {
     setCurrentUser(initialAuthState.currentUser);
   }
 
@@ -36,8 +36,8 @@ function AuthProvider({ children }: any) {
 
   const value = {
     currentUser,
-    signIn,
-    signOut,
+    persistUserData,
+    clearUserData,
     isAuthenticated
   };
 

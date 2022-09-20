@@ -27,22 +27,22 @@ function App() {
               path='/community/:communityName'
               element={<Community />}
             />
-            <Route
+            {/* <Route
               path='/login'
               element={
                 <PublicRoute>
                   <Signin />
                 </PublicRoute>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path='/signup'
               element={
                 <PublicRoute>
                   <Signup />
                 </PublicRoute>
               }
-            />
+            /> */}
             <Route
               path='/community/:communityName/comments/:postId'
               element={<Post />}
