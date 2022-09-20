@@ -1,10 +1,10 @@
 import PostsListingFilterButtons from '../Posts/PostsListingFilterButtons';
 import PostListing from '../Posts/PostListing';
-import TopCommunities from '../Communities/TopCommunities';
-import { fetchTrending } from '../../services/postService';
+import { fetchTrendingPosts } from '../../services/postService';
 import PostListingSkeleton from '../skeletons/PostListingSkeleton';
 import { useQuery } from '@tanstack/react-query';
 import { TPost } from '../../types/TPost';
+import TopCommunities from '../Communities/TopCommunities';
 
 function Home() {
   const {
@@ -12,7 +12,7 @@ function Home() {
     isSuccess,
     isError,
     data: posts
-  } = useQuery(['trendingPosts'], () => fetchTrending<TPost[]>(), {
+  } = useQuery(['trendingPosts'], () => fetchTrendingPosts<TPost[]>(), {
     retry: 3
   });
   if (isError) {
@@ -41,7 +41,7 @@ function Home() {
               />
             ))}
         </div>
-        <div className='w-1/3'>
+        <div className='w-1/3 p-4 bg-base-200 rounded-lg'>
           <TopCommunities />
         </div>
       </div>

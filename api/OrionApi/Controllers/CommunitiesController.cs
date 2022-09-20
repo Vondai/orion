@@ -45,7 +45,7 @@ namespace OrionApi.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("listing/top")]
+        [Route("top")]
         public IActionResult GetTop()
         {
             var topCommunities = communityService.GetTop();

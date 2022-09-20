@@ -21,7 +21,7 @@ export const createPost = (
     });
 };
 
-export const fetchTrending = async <T>() => {
+export const fetchTrendingPosts = async <T>() => {
   const res = await fetch(`${baseUrl}/posts/`);
   if (res.ok) {
     const posts: Promise<T> = res.json();

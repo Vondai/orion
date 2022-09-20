@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className='max-w-lg bg-primary-focus rounded-lg p-5 flex gap-4 text-lg font-bold fixed bottom-6 right-2'>
+    <footer className='max-w-lg bg-primary-focus rounded-lg p-5 flex gap-4 text-lg font-bold fixed bottom-6 right-8'>
       <section>
         <ul>
           <li className='hover:underline'>

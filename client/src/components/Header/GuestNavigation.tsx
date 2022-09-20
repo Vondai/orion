@@ -2,21 +2,21 @@ import { FC, useState, useEffect } from 'react';
 import AuthModal from '../AuthModal';
 
 const GuestNavigation: FC = () => {
-  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   useEffect(() => {
-    return () => setAuthModalOpen(false);
+    return () => setIsAuthModalOpen(false);
   }, []);
   return (
     <>
       <button
         className='btn-auth-cta'
-        onClick={() => setAuthModalOpen(true)}
+        onClick={() => setIsAuthModalOpen(true)}
       >
         Sign in / Sign up
       </button>
       <AuthModal
         isAuthModalOpen={isAuthModalOpen}
-        setAuthModalOpen={setAuthModalOpen}
+        setIsAuthModalOpen={setIsAuthModalOpen}
       />
     </>
   );

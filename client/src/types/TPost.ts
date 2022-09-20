@@ -1,8 +1,8 @@
-export interface TPost {
+export type TPost = {
   id: string;
   title: string;
   authorName: string;
   createdOn: string;
-  commentsCount: string;
+  commentsCount: number;
   communityName: string;
-}
+};

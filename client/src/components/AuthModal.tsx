@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import FocusTrap from 'focus-trap-react';
 import { useClickAway } from 'react-use';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -19,8 +19,8 @@ type TSignInUser = {
 
 const AuthModal: FC<{
   isAuthModalOpen: boolean;
-  setAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ isAuthModalOpen, setAuthModalOpen }) => {
+  setIsAuthModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ isAuthModalOpen, setIsAuthModalOpen }) => {
   const [showSignupForm, setShowSignupForm] = useState(false);
   const signInMutation = useMutation(
     ({ username, password }: { username: string; password: string }) =>
@@ -64,10 +64,13 @@ const AuthModal: FC<{
     e.stopPropagation();
     if (e.type === 'keydown' && e.code !== 'Escape') return;
     reset();
-    setAuthModalOpen(false);
+    setIsAuthModalOpen(false);
     document.body.classList.remove('body-overflow');
   };
 
+  useEffect(() => {
+    return () => document.body.classList.remove('body-overflow');
+  }, []);
   const handleAuthFormChange = () => {
     reset();
     setShowSignupForm(!showSignupForm);

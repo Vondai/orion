@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AboutCommunity from './AboutCommunity';
 import PostsListingFilterButtons from '../Posts/PostsListingFilterButtons';
@@ -8,8 +8,6 @@ import PageNotFound from '../PageNotFound';
 import { useAuth } from '../../contexts/AuthContext';
 import CreateModal from '../Posts/CreateModal';
 import { NotificationContext } from '../Notifications/NotificationProvider';
-import * as postService from '../../services/postService';
-import './Community.css';
 import {
   fetchCommunity,
   manageCommunity

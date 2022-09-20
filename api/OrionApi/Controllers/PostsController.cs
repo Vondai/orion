@@ -25,7 +25,7 @@ namespace OrionApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult FetchTrending()
+        public IActionResult GetTrending()
         {
             var posts = postService.GetAll();
             return Ok(posts);

@@ -16,16 +16,17 @@ export const create = (title: string, description: string, token: string) => {
     });
 };
 
-export const getTop = () => {
-  return fetch(`${baseUrl}/community/listing/top`, {
+export const fetchTopCommunities = async <T>() => {
+  const res = await fetch(`${baseUrl}/communities/top`, {
     headers: {
       'content-type': 'application/json'
     }
-  })
-    .then((res) => res.json())
-    .catch((error) => {
-      console.log(error);
-    });
+  });
+  if (res.ok) {
+    const communities: Promise<T> = res.json();
+    return communities;
+  }
+  throw new Error('Something went wrong.');
 };
 
 export const getCommunityDetails = (communityName: string, token: string) => {
@@ -68,8 +69,8 @@ export const fetchCommunity = async (communityName: string, token: string) => {
       Authorization: `Bearer ${token}`
     }
   });
-  if (res.status === 404) {
-    throw new Error('Community not found.');
+  if (res.ok) {
+    return res.json();
   }
-  return res.json();
+  throw new Error('Community not found.');
 };

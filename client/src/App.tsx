@@ -14,7 +14,7 @@ function App() {
     <>
       <AuthProvider>
         <Header />
-        <main className='p-4'>
+        <main className='px-8 py-4'>
           <Routes>
             <Route
               path='/'
