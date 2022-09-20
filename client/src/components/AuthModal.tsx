@@ -1,8 +1,8 @@
-import React, { FC, useRef, useState, useEffect } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import FocusTrap from 'focus-trap-react';
 import { useClickAway } from 'react-use';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { signIn } from '../services/authService';
+import { signIn, signUp } from '../services/authService';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '../contexts/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -28,7 +28,6 @@ const AuthModal: FC<{
     {
       onSuccess: (data) => {
         persistUserData!(data);
-        setAuthModalOpen(false);
         navigate(location.pathname);
       },
       onError: () => {
@@ -36,8 +35,22 @@ const AuthModal: FC<{
       }
     }
   );
+  const signUpMutation = useMutation(
+    ({ username, password }: { username: string; password: string }) =>
+      signUp<TSignInUser>(username, password),
+    {
+      onSuccess: (data) => {
+        persistUserData!(data);
+        navigate(location.pathname);
+      },
+      onError: () => {
+        setError('username', { message: 'User already exists.' });
+      }
+    }
+  );
   const {
     register,
+    watch,
     reset,
     setError,
     formState: { errors },
@@ -47,9 +60,6 @@ const AuthModal: FC<{
   const { persistUserData } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  useEffect(() => {
-    return () => setAuthModalOpen(false);
-  }, [setAuthModalOpen]);
   const handleAuthModalClose = (e: any) => {
     e.stopPropagation();
     if (e.type === 'keydown' && e.code !== 'Escape') return;
@@ -59,17 +69,28 @@ const AuthModal: FC<{
   };
 
   const handleAuthFormChange = () => {
+    reset();
     setShowSignupForm(!showSignupForm);
   };
 
   const submitForm: SubmitHandler<IFormInput> = async ({
     username,
-    password
+    password,
+    repeatPassword
   }) => {
-    await signInMutation.mutateAsync({
-      username,
-      password
-    });
+    try {
+      if (repeatPassword) {
+        await signUpMutation.mutateAsync({
+          username,
+          password
+        });
+      } else {
+        await signInMutation.mutateAsync({
+          username,
+          password
+        });
+      }
+    } catch (error) {}
   };
 
   useClickAway(modalRef, handleAuthModalClose);
@@ -162,20 +183,27 @@ const AuthModal: FC<{
                     <input
                       {...register('repeatPassword', {
                         required: true,
-                        minLength: 6,
-                        maxLength: 20
+                        validate: (value) => {
+                          if (watch('password') !== value) {
+                            return 'Your passwords do no match';
+                          }
+                        }
                       })}
                       type='password'
                       placeholder='xxxxxx'
                       className='input input-bordered'
                     />
                   </label>
+                  <span className='text-error'>
+                    {errors.repeatPassword?.message}
+                  </span>
                 </>
               )}
               {showSignupForm ? (
                 <button
                   type='submit'
                   className='btn-auth-cta mt-4'
+                  disabled={signInMutation.isLoading}
                 >
                   Sign up
                 </button>

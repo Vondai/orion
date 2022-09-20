@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using OrionApi.Models;
 using OrionApi.Models.User;
 using OrionApi.Services.Users;
-using OrionApi.Models;
 
 namespace OrionApi.Controllers
 {
@@ -28,11 +27,11 @@ namespace OrionApi.Controllers
             var result = await usersService.SignUpUser(model.Username, model.Password);
             if (!result.Succeeded)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                       new Response { Status = "Error", Message = "Username already exists." });
+                return BadRequest(new ResponseMessage("User already exists."));
             }
+            var token = await usersService.SignInUser(model.Username, model.Password);
+            return Ok(new { model.Username, token });
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully." });
         }
 
         [HttpPost]

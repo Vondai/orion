@@ -1,6 +1,6 @@
 const baseUrl = 'https://localhost:44377/orion.api';
 
-export const signUp = async (username: string, password: string) => {
+export const signUp = async <T>(username: string, password: string) => {
   let res = await fetch(`${baseUrl}/user/signUp`, {
     method: 'POST',
     headers: {
@@ -8,10 +8,11 @@ export const signUp = async (username: string, password: string) => {
     },
     body: JSON.stringify({ username, password })
   });
-
-  let jsonResult = await res.json();
-
-  return jsonResult;
+  if (res.ok) {
+    const data: Promise<T> = res.json();
+    return data;
+  }
+  throw new Error('User already exists.');
 };
 
 export const signIn = async <T>(username: string, password: string) => {
