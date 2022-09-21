@@ -7,7 +7,7 @@ function Header() {
   const { currentUser, isAuthenticated } = useAuth();
 
   return (
-    <header className='bg-primary-focus navbar justify-between px-3'>
+    <header className='bg-primary-focus navbar justify-between px-8'>
       <section className='text-3xl font-bold cursor-pointer hover:underline underline-offset-8'>
         <Link to='/'>
           <p>Orion</p>
