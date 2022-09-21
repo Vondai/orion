@@ -4,15 +4,15 @@ import { TCommunity } from '../../types/TCommunity';
 const AboutCommunity: React.FC<{
   community: TCommunity;
   // handleCreatePostClick: () => void;
-  // handleJoinBtnClick: () => void;
+  handleJoinBtnClick: () => void;
   // loading: boolean;
-}> = ({ community }) => {
+}> = ({ community, handleJoinBtnClick }) => {
   const joinBtn = (
     <div>
       <button
         type='button'
         className='btn-community-cta'
-        // onClick={handleJoinBtnClick}
+        onClick={handleJoinBtnClick}
       >
         Join now!
       </button>

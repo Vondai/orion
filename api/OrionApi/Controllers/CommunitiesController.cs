@@ -69,16 +69,14 @@ namespace OrionApi.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Manage([FromBody] ManageCommunityRequestBody requestBody)
+        [Route("{communityName}/join")]
+        public async Task<IActionResult> Join([FromRoute] string communityName)
         {
             var userId = this.User.Id();
             try
             {
                 string result = "";
-                if (requestBody.Action == "join")
-                {
-                    result = await communityService.Join(requestBody.CommunityName, userId);
-                }
+                    result = await communityService.Join(communityName, userId);
                 return Ok(new ResponseMessage(result));
             }
             catch (InvalidOperationException e)

@@ -1,42 +1,67 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AboutCommunity from './AboutCommunity';
 import PostsListingFilterButtons from '../Posts/PostsListingFilterButtons';
 import PostListing from '../Posts/PostListing';
-import Footer from '../Footer/Footer';
 import PageNotFound from '../PageNotFound';
 import { useAuth } from '../../contexts/AuthContext';
 import CreateModal from '../Posts/CreateModal';
 import { NotificationContext } from '../Notifications/NotificationProvider';
-import {
-  fetchCommunity,
-  manageCommunity
-} from '../../services/communityService';
+import { fetchCommunity, joinCommunity } from '../../services/communityService';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { TPost } from '../../types/TPost';
 import PostListingSkeleton from '../skeletons/PostListingSkeleton';
 import { TCommunity } from '../../types/TCommunity';
+import AuthModal from '../AuthModal';
+type TJoinResponse = {
+  message: string;
+};
 const Community = () => {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated } = useAuth();
   const { communityName } = useParams();
   const dispatch = useContext(NotificationContext);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [postError, setPostError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const queryClient = useQueryClient();
   const token: string = currentUser.token;
-  const joinCommunityMutation = useMutation(() =>
-    manageCommunity(communityName!, token, 'join')
+  const joinCommunityMutation = useMutation(
+    () => joinCommunity<TJoinResponse>(communityName!, token),
+    {
+      onSuccess: (data) => {
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            type: 'SUCCESS',
+            message: data.message
+          }
+        });
+        queryClient.invalidateQueries(['community']);
+      },
+      onError: (error: any) => {
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            type: 'ERROR',
+            message: error.message
+          }
+        });
+      }
+    }
   );
+  useEffect(() => {
+    return () => {
+      setIsAuthModalOpen(false);
+    };
+  }, [isAuthenticated, queryClient]);
   const {
     isLoading,
     isSuccess,
     isError,
     data: community
   } = useQuery(
-    ['community'],
+    ['community', communityName, token],
     () => fetchCommunity<TCommunity>(communityName!, token),
     {
       retry: false,
@@ -44,10 +69,10 @@ const Community = () => {
     }
   );
 
-  function handleCreatePostClick() {
-    setPostError('');
-    setIsOpen(true);
-  }
+  // function handleCreatePostClick() {
+  //   setPostError('');
+  //   setIsOpen(true);
+  // }
 
   // function createPostSubmitHandler(e: React.FormEvent<HTMLFormElement>) {
   //   e.preventDefault();
@@ -87,29 +112,9 @@ const Community = () => {
   //     });
   // }
 
-  const handleJoinCtaClick = async () => {
-    if (!isAuthenticated) return navigate('/login');
-
-    const result = await joinCommunityMutation.mutateAsync();
-    if (result.message === 'User joined successfuly') {
-      dispatch({
-        type: 'ADD_NOTIFICATION',
-        payload: {
-          type: 'SUCCESS',
-          message: 'Successfully joined.'
-        }
-      });
-      queryClient.invalidateQueries(['community']);
-    }
-    if (joinCommunityMutation.isError) {
-      dispatch({
-        type: 'ADD_NOTIFICATION',
-        payload: {
-          type: 'ERROR',
-          message: result.message
-        }
-      });
-    }
+  const handleJoinBtnClick = async () => {
+    if (!isAuthenticated) return setIsAuthModalOpen(true);
+    await joinCommunityMutation.mutateAsync();
   };
 
   if (isError) {
@@ -140,9 +145,18 @@ const Community = () => {
             ))}
         </div>
         <div className='w-1/3 p-4 bg-base-200 rounded-lg'>
-          {isSuccess && <AboutCommunity community={community} />}
+          {isSuccess && (
+            <AboutCommunity
+              community={community}
+              handleJoinBtnClick={handleJoinBtnClick}
+            />
+          )}
         </div>
       </div>
+      <AuthModal
+        isAuthModalOpen={isAuthModalOpen}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+      />
     </>
   );
 };

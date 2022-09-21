@@ -43,24 +43,22 @@ export const getCommunityPosts = (communityName: string) => {
   );
 };
 
-export const manageCommunity = async (
+export const joinCommunity = async <T>(
   communityName: string,
-  token: string,
-  action: string
+  token: string
 ) => {
-  const body = {
-    communityName,
-    action
-  };
-  const res = await fetch(`${baseUrl}/communities`, {
+  const res = await fetch(`${baseUrl}/communities/${communityName}/join`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify(body)
+    }
   });
-  return res.json();
+  if (res.ok) {
+    const data: Promise<T> = res.json();
+    return data;
+  }
+  throw new Error('Something went wrong.');
 };
 
 export const fetchCommunity = async <T>(
