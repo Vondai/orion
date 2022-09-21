@@ -1,33 +1,20 @@
 import React from 'react';
-import './AboutCommunity.css';
-type TCommunityDetails = {
-  name: string;
-  members: number;
-  createdOn: string;
-  description: string;
-  userIsCreator: boolean;
-  userIsMember: boolean;
-};
+import { TCommunity } from '../../types/TCommunity';
+
 const AboutCommunity: React.FC<{
-  communityDetails: TCommunityDetails;
-  handleCreatePostClick: () => void;
-  handleJoinCtaClick: () => void;
-  loading: boolean;
-}> = ({
-  communityDetails,
-  handleCreatePostClick,
-  handleJoinCtaClick,
-  loading
-}) => {
+  community: TCommunity;
+  // handleCreatePostClick: () => void;
+  // handleJoinBtnClick: () => void;
+  // loading: boolean;
+}> = ({ community }) => {
   const joinBtn = (
     <div>
       <button
         type='button'
-        className='community-cta join-cta'
-        onClick={handleJoinCtaClick}
-        disabled={loading}
+        className='btn-community-cta'
+        // onClick={handleJoinBtnClick}
       >
-        Join
+        Join now!
       </button>
     </div>
   );
@@ -36,7 +23,7 @@ const AboutCommunity: React.FC<{
       <div>
         <button
           type='button'
-          className='community-cta edit-cta'
+          className='btn-community-cta'
         >
           Edit
         </button>
@@ -44,7 +31,7 @@ const AboutCommunity: React.FC<{
       <div>
         <button
           type='button'
-          className='community-cta delete-cta'
+          className='btn-community-cta'
         >
           Delete
         </button>
@@ -55,8 +42,8 @@ const AboutCommunity: React.FC<{
     <div>
       <button
         type='button'
-        className='community-cta create-post-cta'
-        onClick={handleCreatePostClick}
+        className='btn-community-cta'
+        // onClick={handleCreatePostClick}
       >
         Publish
       </button>
@@ -64,20 +51,22 @@ const AboutCommunity: React.FC<{
   );
 
   return (
-    <aside className='community-info'>
-      <section className='info-header-wrapper'>
-        <p className='info-header-text'>About {communityDetails.name}</p>
+    <aside>
+      <section className='text-center text-2xl'>
+        <p>
+          About <span className='italic'>{community.name}</span>
+        </p>
       </section>
-      <section className='info-content-wrapper'>
-        <p className='info-content-text'>{communityDetails.description}</p>
+      <section className='text-xl'>
+        <p>{community.description}</p>
       </section>
-      <section className='additional-info-section'>
-        <div>{communityDetails.members} member/s</div>
-        <div>Created {communityDetails.createdOn}</div>
+      <section className='flex justify-between text-lg mb-5'>
+        <div>{community.members} member/s</div>
+        <div>Created {community.createdOn}</div>
       </section>
-      <section className='community-cta-section'>
-        {communityDetails.userIsMember ? createPostBtn : joinBtn}
-        {communityDetails.userIsCreator && creatorBtns}
+      <section>
+        {community.userIsMember ? createPostBtn : joinBtn}
+        {community.userIsCreator && creatorBtns}
       </section>
     </aside>
   );

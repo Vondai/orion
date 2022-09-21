@@ -30,6 +30,10 @@ body {
   @apply btn bg-secondary px-5 py-2 flex gap-2 items-center rounded-xl text-xl;
 }
 
+.btn-community-cta {
+  @apply btn w-full bg-primary text-primary-content rounded-lg px-6 hover:bg-primary-content hover:text-primary;
+}
+
 .primary-opacity-1 {
   background: rgba(80, 20, 184, 1);
 }

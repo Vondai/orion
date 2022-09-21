@@ -63,14 +63,18 @@ export const manageCommunity = async (
   return res.json();
 };
 
-export const fetchCommunity = async (communityName: string, token: string) => {
+export const fetchCommunity = async <T>(
+  communityName: string,
+  token: string
+) => {
   const res = await fetch(`${baseUrl}/communities/${communityName}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
   if (res.ok) {
-    return res.json();
+    const community: Promise<T> = res.json();
+    return community;
   }
   throw new Error('Community not found.');
 };

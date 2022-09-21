@@ -14,23 +14,8 @@ import {
 } from '../../services/communityService';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { TPost } from '../../types/TPost';
-
-// type TPost = {
-//   id: string;
-//   title: string;
-//   authorName: string;
-//   commentsCount: number;
-//   createdOn: string;
-// };
-// type TCommunity = {
-//   name: string;
-//   members: number;
-//   createdOn: string;
-//   description: string;
-//   userIsCreator: boolean;
-//   userIsMember: boolean;
-//   posts: TPost[];
-// };
+import PostListingSkeleton from '../skeletons/PostListingSkeleton';
+import { TCommunity } from '../../types/TCommunity';
 const Community = () => {
   const navigate = useNavigate();
   const { currentUser, isAuthenticated } = useAuth();
@@ -47,12 +32,17 @@ const Community = () => {
   );
   const {
     isLoading,
+    isSuccess,
     isError,
     data: community
-  } = useQuery(['community'], () => fetchCommunity(communityName!, token), {
-    retry: false,
-    refetchOnWindowFocus: false
-  });
+  } = useQuery(
+    ['community'],
+    () => fetchCommunity<TCommunity>(communityName!, token),
+    {
+      retry: false,
+      refetchOnWindowFocus: false
+    }
+  );
 
   function handleCreatePostClick() {
     setPostError('');
@@ -122,44 +112,38 @@ const Community = () => {
     }
   };
 
-  if (isLoading) {
-    return <h1>We are loading...</h1>;
-  }
-
   if (isError) {
     return <PageNotFound />;
   }
 
   return (
-    <main className='site-content-wrapper'>
-      <div className='main-content'>
-        <PostsListingFilterButtons />
-        <section className='post-content-wrapper'>
-          {community.posts.map((post: TPost) => (
-            <PostListing
-              key={post.id}
-              post={post}
-            />
-          ))}
-        </section>
+    <>
+      <div className='flex justify-between gap-28 items-start'>
+        <div className='w-3/4'>
+          <div className='bg-base-200 py-5 mb-3 rounded-lg'>
+            <PostsListingFilterButtons />
+          </div>
+          {isLoading && (
+            <>
+              <PostListingSkeleton />
+              <PostListingSkeleton />
+              <PostListingSkeleton />
+              <PostListingSkeleton />
+            </>
+          )}
+          {isSuccess &&
+            community.posts.map((post) => (
+              <PostListing
+                key={post.id}
+                post={post}
+              />
+            ))}
+        </div>
+        <div className='w-1/3 p-4 bg-base-200 rounded-lg'>
+          {isSuccess && <AboutCommunity community={community} />}
+        </div>
       </div>
-      <div className='side-wrapper'>
-        <AboutCommunity
-          communityDetails={community}
-          handleCreatePostClick={handleCreatePostClick}
-          handleJoinCtaClick={handleJoinCtaClick}
-          loading={loading}
-        />
-        <Footer />
-      </div>
-      {/* <CreateModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        createPostSubmitHandler={createPostSubmitHandler}
-        postError={postError}
-        loading={loading}
-      ></CreateModal> */}
-    </main>
+    </>
   );
 };
 
