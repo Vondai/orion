@@ -143,7 +143,7 @@ const AuthModal: FC<{
                     },
                     maxLength: {
                       value: 20,
-                      message: "Username shouldn't be more tham 20 characters."
+                      message: "Username shouldn't be more than 20 characters."
                     }
                   })}
                   type='text'
@@ -167,7 +167,7 @@ const AuthModal: FC<{
                     },
                     maxLength: {
                       value: 20,
-                      message: "Password shouldn't be more tham 20 characters."
+                      message: "Password shouldn't be more than 20 characters."
                     }
                   })}
                   type='password'

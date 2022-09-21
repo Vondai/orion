@@ -33,20 +33,18 @@ namespace OrionApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("create")]
         public async Task <IActionResult> Create(PostCreateModel model)
         {
             var userId = this.User.Id();
-            var isMember = communityService.IsMember(model.Community, userId);
+            var isMember = communityService.IsMember(model.CommunityName, userId);
             if (!isMember)
             {
                 return Unauthorized(new Response { Status = "Error", Message = "User is not a member." });
             }
-            var communityId = communityService.GetId(model.Community);
+            var communityId = communityService.GetId(model.CommunityName);
             var postId = await postService.Create(model.Title, model.Content, communityId, userId);
 
-            var response = new Response { Status = "Success", Message = postId };
-            return StatusCode(StatusCodes.Status201Created, response);
+            return StatusCode(201, new { postId });
         }
 
         [HttpGet]

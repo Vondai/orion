@@ -6,6 +6,6 @@
 
         public string Content { get; set; }
 
-        public string Community { get; set; }
+        public string CommunityName { get; set; }
     }
 }

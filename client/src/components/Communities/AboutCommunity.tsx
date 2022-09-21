@@ -3,10 +3,10 @@ import { TCommunity } from '../../types/TCommunity';
 
 const AboutCommunity: React.FC<{
   community: TCommunity;
-  // handleCreatePostClick: () => void;
+  handleCreatePostBtnClick: () => void;
   handleJoinBtnClick: () => void;
   // loading: boolean;
-}> = ({ community, handleJoinBtnClick }) => {
+}> = ({ community, handleJoinBtnClick, handleCreatePostBtnClick }) => {
   const joinBtn = (
     <div>
       <button
@@ -43,7 +43,7 @@ const AboutCommunity: React.FC<{
       <button
         type='button'
         className='btn-community-cta'
-        // onClick={handleCreatePostClick}
+        onClick={handleCreatePostBtnClick}
       >
         Publish
       </button>
