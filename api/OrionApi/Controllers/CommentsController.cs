@@ -13,46 +13,40 @@ namespace OrionApi.Controllers
 {
     [Route("orion.api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentsController : ControllerBase
     {
-        private readonly ICommunityService communityService;
         private readonly ICommentService commentService;
         private readonly IPostService postService;
 
-        public CommentController(
-            ICommunityService communityService,
+        public CommentsController(
             ICommentService commentService,
             IPostService postService)
         {
-            this.communityService = communityService;
             this.commentService = commentService;
             this.postService = postService;
         }
 
         [Authorize]
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> Create(CommentCreateModel model)
         {
             var userId = this.User.Id();
-            var response = new Response();
+            var response = new ResponseMessage("");
             if (model.Comment.Length < 1)
             {
-                response.Status = "Error";
                 response.Message = "Comment is empty.";
                 return StatusCode(StatusCodes.Status400BadRequest, response);
             }
             var isPostValid = postService.IsValidById(model.PostId);
             if (!isPostValid)
             {
-                response.Status = "Error";
                 response.Message = "Invalid post";
                 return StatusCode(StatusCodes.Status400BadRequest, response);
             }
             var communityId = postService.GetCommunityId(model.PostId);
-            var commentModel = await commentService.Create(model.Comment, model.PostId, communityId, userId);
+            var comment = await commentService.Create(model.Comment, model.PostId, communityId, userId);
 
-            return StatusCode(StatusCodes.Status201Created, commentModel);
+            return StatusCode(StatusCodes.Status201Created, new {commentId= comment });
         }
 
         [AllowAnonymous]

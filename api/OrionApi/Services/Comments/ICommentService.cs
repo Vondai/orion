@@ -6,7 +6,7 @@ namespace OrionApi.Services.Comments
 {
     public interface ICommentService
     {
-        public Task<CommentModel> Create(string content, string postId, string communityId, string userId);
+        public Task<string> Create(string content, string postId, string communityId, string userId);
 
         public ICollection<CommentModel> Get(string postId);
 

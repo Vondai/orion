@@ -15,7 +15,7 @@ namespace OrionApi.Services.Comments
 
         public CommentService(OrionDbContext data) => this.data = data;
 
-        public async Task<CommentModel> Create(string content, string postId, string communityId, string userId)
+        public async Task<string> Create(string content, string postId, string communityId, string userId)
         {
             var comment = new Comment
             {
@@ -25,12 +25,9 @@ namespace OrionApi.Services.Comments
                 CreatedOn = DateTime.UtcNow,
             };
 
-            data.Comments.Add(comment);
+            await data.Comments.AddAsync(comment);
             await data.SaveChangesAsync();
-
-            var commentModel = GetById(comment.Id);
-
-            return commentModel;
+            return comment.Id;
         }
 
         public ICollection<CommentModel> Get(string postId)

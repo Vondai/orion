@@ -7,11 +7,12 @@ import { fetchById } from '../../services/postService';
 import Footer from '../Footer/Footer';
 import PostCta from './PostCta';
 import Comment from '../Comments/Comment';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LeaveCommentArea from './LeaveCommentArea';
 import LeaveCommentGuest from './LeaveCommentGuest';
 import NoCommentsSection from './NoCommentsSection';
 import AboutAuthor from '../Users/AboutAuthor';
+import { createComment } from '../../services/commentService';
 
 export type TComment = {
   id: string;
@@ -32,53 +33,52 @@ type TPost = {
   commentsCount: number;
   comments: TComment[];
 };
+type TNewCommentResponse = {
+  commentId: string;
+};
 function Post() {
   const { isAuthenticated, currentUser } = useAuth();
   const sortingPickerRef = useRef<HTMLDivElement>(null);
   const dispatch = useContext(NotificationContext);
   const { communityName, postId } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [comments, setComments] = useState([]);
   const [openCommentSortingPicker, setOpenCommentSortingPicker] =
     useState(false);
-
+  const queryClient = useQueryClient();
+  const token = currentUser.token;
   const {
     isLoading,
-    isSuccess,
     isError,
     data: post
   } = useQuery(['post', postId], () => fetchById<TPost>(postId!));
 
-  // function commentSubmitHandler(e:any) {
-  //   const form = e.currentTarget;
-  //   e.preventDefault();
-  //   const { comment } = Object.fromEntries(new FormData(e.currentTarget));
-  //   if (!comment) return;
-  //   setLoading(true);
-  //   commentService
-  //     .create(comment, postId, token)
-  //     .then((data) => {
-  //       setComments((oldComments) => [data, ...oldComments]);
-  //       form.reset();
-  //       dispatch({
-  //         type: 'ADD_NOTIFICATION',
-  //         payload: {
-  //           type: 'SUCCESS',
-  //           message: 'Successfully added your comment.'
-  //         }
-  //       });
-  //     })
-  //     .catch(() => {
-  //       dispatch({
-  //         type: 'ADD_NOTIFICATION',
-  //         payload: {
-  //           type: 'ERROR',
-  //           message: "Couldn't post your comment."
-  //         }
-  //       });
-  //       setLoading(false);
-  //     });
-  // }
+  const createCommentMutation = useMutation(
+    createComment<TNewCommentResponse>,
+    {
+      onSuccess: (data) => {
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            type: 'SUCCESS',
+            message: 'Successfully added your comment.'
+          }
+        });
+        queryClient.invalidateQueries(['post']);
+      },
+      onError: () => {
+        dispatch({
+          type: 'ADD_NOTIFICATION',
+          payload: {
+            type: 'ERROR',
+            message: "Couldn't post your comment."
+          }
+        });
+      }
+    }
+  );
+  const commentCreateHandler = (data: { comment: string }) => {
+    if (!postId) return;
+    createCommentMutation.mutateAsync({ comment: data.comment, postId, token });
+  };
   // function sortingClickBtnHandler() {
   //   setOpenCommentSortingPicker((prev) => !prev);
   // }
@@ -132,7 +132,11 @@ function Post() {
           postId={post.id}
           communityName={communityName!}
         />
-        {isAuthenticated ? <LeaveCommentArea /> : <LeaveCommentGuest />}
+        {isAuthenticated ? (
+          <LeaveCommentArea commentCreateHandler={commentCreateHandler} />
+        ) : (
+          <LeaveCommentGuest />
+        )}
         <section>
           <div>
             <button
