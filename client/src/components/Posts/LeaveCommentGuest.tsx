@@ -1,13 +1,23 @@
+import { useState } from 'react';
+import AuthModal from '../AuthModal';
+
 const LeaveCommentGuest = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   return (
-    <section className='post-comment-anonymous'>
-      <span className='post-comment-anonymous-text'>
-        Log in or sign up to leave a comment
+    <section className='bg-base-300 rounded-lg p-4 flex items-center'>
+      <span>
+        <span
+          className='text-accent hover:text-primary-content cursor-pointer'
+          onClick={() => setIsAuthModalOpen(true)}
+        >
+          Sign in/Sign up
+        </span>{' '}
+        to leave a comment
       </span>
-      <div className='post-comment-cta-wrapper'>
-        <button className='post-comment-login'></button>
-        <button className='post-comment-signup'></button>
-      </div>
+      <AuthModal
+        isAuthModalOpen={isAuthModalOpen}
+        setIsAuthModalOpen={setIsAuthModalOpen}
+      />
     </section>
   );
 };

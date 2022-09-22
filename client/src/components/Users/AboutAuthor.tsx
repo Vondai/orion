@@ -6,16 +6,16 @@ type TProps = {
 };
 const AboutAuthor: React.FC<TProps> = ({ author }) => {
   return (
-    <aside className='bg-base-200'>
+    <aside className='w-1/3 bg-base-200 rounded-lg p-5'>
       <section className='text-center text-2xl'>
         <p>
-          About <span className='italic'>{author.username}</span>
+          About OP(<span className='italic'>{author.username}</span>)
         </p>
       </section>
       <section className='text-xl'>
         {/* <p>{community.description}</p> */}
       </section>
-      <section className='flex justify-between text-lg mb-5'>
+      <section className='text-lg mb-5'>
         <div>{author.totalPosts} total posts</div>
         <div>Member since 21-Sep-2022</div>
       </section>

@@ -92,9 +92,20 @@ function Post() {
     return <div>There was a problem.</div>;
   }
   return (
-    <section className='flex justify-between gap-28 items-start'>
-      <section className='flex flex-col gap-3 bg-base-200 w-2/3 px-5 py-3 rounded-lg'>
-        <section className='flex justify-around'>
+    <section className='flex justify-between items-start h-full'>
+      <section className='flex flex-col gap-3 bg-base-200 w-2/4 px-5 py-3 rounded-lg'>
+        <section className='flex justify-around items-center'>
+          <div className='w-6 h-6'>
+            <Link to={`/community/${communityName}`}>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 448 512'
+                className='fill-accent hover:fill-primary-content cursor-pointer'
+              >
+                <path d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z' />
+              </svg>
+            </Link>
+          </div>
           <div>
             <p>
               Posted by{' '}
