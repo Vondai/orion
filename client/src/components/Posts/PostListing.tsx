@@ -41,11 +41,11 @@ const PostListing: React.FC<TProps> = ({ post }) => {
             <div>
               <p>
                 Posted by{' '}
-                <Link
-                  to={`/user/${post.authorName}`}
-                  className='hover:text-primary-content font-bold'
-                >
-                  user/{post.authorName}
+                <Link to={`/user/${post.authorName}`}>
+                  user/
+                  <span className='hover:text-primary-content font-bold'>
+                    {post.authorName}
+                  </span>
                 </Link>
               </p>
             </div>

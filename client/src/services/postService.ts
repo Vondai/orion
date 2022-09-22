@@ -35,10 +35,11 @@ export const fetchTrendingPosts = async <T>() => {
   throw new Error('Something went wrong.');
 };
 
-export const getById = (postId: string) => {
-  return fetch(`${baseUrl}/post/${postId}`)
-    .then((res) => res.json())
-    .catch((error) => {
-      console.log(error);
-    });
+export const fetchById = async <T>(postId: string) => {
+  const res = await fetch(`${baseUrl}/posts/${postId}`);
+  if (res.ok) {
+    const data: Promise<T> = res.json();
+    return data;
+  }
+  throw new Error('Post does not exist.');
 };

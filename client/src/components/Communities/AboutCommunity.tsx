@@ -5,7 +5,6 @@ const AboutCommunity: React.FC<{
   community: TCommunity;
   handleCreatePostBtnClick: () => void;
   handleJoinBtnClick: () => void;
-  // loading: boolean;
 }> = ({ community, handleJoinBtnClick, handleCreatePostBtnClick }) => {
   const joinBtn = (
     <div>

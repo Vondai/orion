@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using OrionApi.Data;
 using OrionApi.Data.Models;
+using OrionApi.Models.Comment;
 using OrionApi.Models.Post;
+using OrionApi.Models.User;
 
 namespace OrionApi.Services.Posts
 {
@@ -66,17 +68,28 @@ namespace OrionApi.Services.Posts
                 .Take(6)
                 .ToList();
 
-        public PostDetailsModel GetById(string postId)
+        public PostModel GetById(string postId)
             => data.Posts
                 .Where(p => p.Id == postId)
-                .Select(x => new PostDetailsModel
+                .Select(x => new PostModel
                 {
                     Id = x.Id,
-                    AuthorName = x.Author.UserName,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Author = new AuthorModel
+                    {
+                        Username = x.Author.UserName,
+                        TotalPosts = x.Author.Posts.Count
+                    },
                     CommentsCount = x.Comments.Count,
                     CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
-                    Description = x.Description,
-                    Title = x.Title,
+                    Comments = x.Comments.Select(c => new CommentModel
+                    {
+                        Id = c.Id,
+                        Author = c.Author.UserName,
+                        Content = c.Content,
+                        CreatedOn = c.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US"))
+                    }).ToList()
                 })
                 .FirstOrDefault();
 

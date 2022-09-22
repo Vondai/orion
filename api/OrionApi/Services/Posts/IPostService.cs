@@ -12,7 +12,7 @@ namespace OrionApi.Services.Posts
 
         public ICollection<PostListingModel> GetByCommunity(string communityName);
 
-        public PostDetailsModel GetById(string postId);
+        public PostModel GetById(string postId);
 
         public bool IsValidById(string postId);
 
