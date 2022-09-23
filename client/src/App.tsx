@@ -4,7 +4,6 @@ import Header from './components/Header/Header';
 import Post from './components/Posts/Post';
 import PageNotFound from './components/PageNotFound';
 import { AuthProvider } from './contexts/AuthContext';
-import PrivateRoute from './components/PrivateRoute';
 import Community from './components/Communities/Community';
 import Footer from './components/Footer/Footer';
 

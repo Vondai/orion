@@ -59,9 +59,9 @@ namespace OrionApi.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("{postId}")]
-        public IActionResult GetById(string postId)
+        public IActionResult GetById(string postId, [FromQuery(Name ="sort")] string sort)
         {
-            var post = postService.GetById(postId);
+            var post = postService.GetById(postId, sort);
             if (post == null)
             {
                 return NotFound(new Response { Status = "Error", Message = "Post is locked or deleted." });

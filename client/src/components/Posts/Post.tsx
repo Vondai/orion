@@ -1,10 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
-import { useState, useRef, useContext } from 'react';
+import { useRef, useContext } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { NotificationContext } from '../Notifications/NotificationProvider';
-import useClickOutside from '../../hooks/useClickOutside';
 import { fetchById } from '../../services/postService';
-import Footer from '../Footer/Footer';
 import PostCta from './PostCta';
 import Comment from '../Comments/Comment';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +11,7 @@ import LeaveCommentGuest from './LeaveCommentGuest';
 import NoCommentsSection from './NoCommentsSection';
 import AboutAuthor from '../Users/AboutAuthor';
 import { createComment } from '../../services/commentService';
+import { useSearchParams } from 'react-router-dom';
 
 export type TComment = {
   id: string;
@@ -40,17 +39,22 @@ function Post() {
   const { isAuthenticated, currentUser } = useAuth();
   const sortingPickerRef = useRef<HTMLDivElement>(null);
   const dispatch = useContext(NotificationContext);
-  const { communityName, postId } = useParams();
-  const [openCommentSortingPicker, setOpenCommentSortingPicker] =
-    useState(false);
+  const { communityName, postId } = useParams<string>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const token = currentUser.token;
+
   const {
     isLoading,
     isError,
     data: post
-  } = useQuery(['post', postId], () => fetchById<TPost>(postId!));
-
+  } = useQuery(
+    ['post', postId, searchParams.get('sort')],
+    () => fetchById<TPost>(postId!, searchParams.get('sort')!),
+    {
+      refetchOnWindowFocus: false
+    }
+  );
   const createCommentMutation = useMutation(
     createComment<TNewCommentResponse>,
     {
@@ -78,6 +82,9 @@ function Post() {
   const commentCreateHandler = (data: { comment: string }) => {
     if (!postId) return;
     createCommentMutation.mutateAsync({ comment: data.comment, postId, token });
+  };
+  const handleCommentSortClick = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchParams({ sort: e.target.value });
   };
   // function sortingClickBtnHandler() {
   //   setOpenCommentSortingPicker((prev) => !prev);
@@ -138,33 +145,23 @@ function Post() {
           <LeaveCommentGuest />
         )}
         <section>
-          <div>
-            <button
-              type='button'
-              //onClick={sortingClickBtnHandler}
-            >
-              <span>Sort by: Best</span>
-            </button>
-            <i className='fas fa-sort-down'></i>
-          </div>
           <div
-            className={`sorting-picker ${
-              openCommentSortingPicker ? 'active' : ''
-            }`}
+            // className={`sorting-picker ${
+            //   openCommentSortingPicker ? 'active' : ''
+            // }`}
             ref={sortingPickerRef}
           >
-            <Link to='?sort=best'>
-              <button>Best</button>
-            </Link>
-            <Link to='?sort=top'>
-              <button>Top</button>
-            </Link>
-            <Link to='?sort=new'>
-              <button>New</button>
-            </Link>
-            <Link to='?sort=old'>
-              <button>Old</button>
-            </Link>
+            <span>Sort by:</span>
+            <select
+              className='select select-bordered select-xs w-full max-w-xs'
+              onChange={(e) => handleCommentSortClick(e)}
+              defaultValue={'best'}
+            >
+              <option value={'best'}>Best</option>
+              <option value={'top'}>Top</option>
+              <option value={'new'}>New</option>
+              <option value={'old'}>Old</option>
+            </select>
           </div>
         </section>
         <section>

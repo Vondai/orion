@@ -35,8 +35,8 @@ export const fetchTrendingPosts = async <T>() => {
   throw new Error('Something went wrong.');
 };
 
-export const fetchById = async <T>(postId: string) => {
-  const res = await fetch(`${baseUrl}/posts/${postId}`);
+export const fetchById = async <T>(postId: string, sortQuery: string) => {
+  const res = await fetch(`${baseUrl}/posts/${postId}?sort=${sortQuery}`);
   if (res.ok) {
     const data: Promise<T> = res.json();
     return data;

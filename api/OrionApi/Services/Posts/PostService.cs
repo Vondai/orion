@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OrionApi.Data;
 using OrionApi.Data.Models;
 using OrionApi.Models.Comment;
 using OrionApi.Models.Post;
 using OrionApi.Models.User;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OrionApi.Services.Posts
 {
@@ -68,30 +70,47 @@ namespace OrionApi.Services.Posts
                 .Take(6)
                 .ToList();
 
-        public PostModel GetById(string postId)
-            => data.Posts
-                .Where(p => p.Id == postId)
-                .Select(x => new PostModel
+        public PostModel GetById(string postId, string sort)
+        {
+            var post = data.Posts
+            .Where(p => p.Id == postId)
+            .Select(x => new PostModel
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Description = x.Description,
+                Author = new AuthorModel
                 {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    Author = new AuthorModel
-                    {
-                        Username = x.Author.UserName,
-                        TotalPosts = x.Author.Posts.Count
-                    },
-                    CommentsCount = x.Comments.Count,
-                    CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
-                    Comments = x.Comments.Select(c => new CommentModel
-                    {
-                        Id = c.Id,
-                        Author = c.Author.UserName,
-                        Content = c.Content,
-                        CreatedOn = c.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US"))
-                    }).ToList()
-                })
-                .FirstOrDefault();
+                    Username = x.Author.UserName,
+                    TotalPosts = x.Author.Posts.Count
+                },
+                CommentsCount = x.Comments.Count,
+                CreatedOn = x.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US")),
+                Comments = x.Comments
+                .Select(c => new CommentModel
+                {
+                    Id = c.Id,
+                    Author = c.Author.UserName,
+                    Content = c.Content,
+                    CreatedOn = c.CreatedOn.ToString("dd-MMM-yyy", new CultureInfo("en-US"))
+                }).ToList()
+            })
+            .FirstOrDefault();
+            switch (sort)
+            {
+                case "new":
+                    post.Comments = post.Comments.OrderByDescending(p => p.CreatedOn).ToList();
+                    break;
+                case "old":
+                    post.Comments= post.Comments.OrderBy(p => p.CreatedOn).ToList();
+                    break;
+                default:
+                    post.Comments = post.Comments.OrderBy(p => p.CreatedOn).ToList();
+                    break;
+            }
+
+            return post;
+        }
 
         public string GetCommunityId(string postId)
             => data.Posts.Where(p => p.Id == postId)
